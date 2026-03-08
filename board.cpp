@@ -96,7 +96,7 @@ Hex::Board::Board(vec2<int> size): size{size} {
         board.emplace_back(size.y, TileType::Empty); // Claude suggestion, more efficient
     }
 
-    int maxPossibleMoves = size.x * size.y / 2;
+    int maxPossibleMoves = (size.x * size.y) / 2;
     stonesPlayerOne.reserve(maxPossibleMoves);
     stonesPlayerTwo.reserve(maxPossibleMoves);
 }
