@@ -36,23 +36,23 @@ class Board {
     std::vector<vec2<int>> stonesPlayerOne;
     std::vector<vec2<int>> stonesPlayerTwo;
 
-    bool tileIsWithinBounds(vec2<int> tile);
-    bool tileIsPlayer1Edge(vec2<int> tile);
-    bool tileIsPlayer2Edge(vec2<int> tile);
-    bool tileIsFree(vec2<int> tile);
+    bool tileIsWithinBounds(const vec2<int> &tile) const;
+    bool tileIsPlayer1Edge(const vec2<int> &tile)  const;
+    bool tileIsPlayer2Edge(const vec2<int> &tile)  const;
+    bool tileIsFree(const vec2<int> &tile)  const;
 
 public:
-    TileType getTile(vec2<int> tile);
+    TileType getTile(const vec2<int> &tile) const;
     vec2<int> getSize() const { return size; };
     std::vector<std::vector<TileType>> getBoard() const { return board; };
 
-    bool playerOnePlace(vec2<int> tile);
-    bool playerTwoPlace(vec2<int> tile);
+    bool playerOnePlace(const vec2<int> &tile);
+    bool playerTwoPlace(const vec2<int> &tile);
 
     Board(vec2<int> size); // initialize board, stonesPlayerOne and stonesPlayerTwo sizes
 };
 
 } // Hex namespace
 
-std::ostream& operator<<(std::ostream& lhs, Hex::TileType rhs);
-std::ostream& operator<<(std::ostream& lhs, Hex::Board rhs);
+std::ostream& operator<<(std::ostream& lhs, const Hex::TileType &rhs);
+std::ostream& operator<<(std::ostream& lhs, const Hex::Board &rhs);
