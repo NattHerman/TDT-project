@@ -16,8 +16,20 @@ void test_vec2_operators() {
     std::cout << "a * 2.5 = " << (a * 2.5) << std::endl;
     std::cout << std::endl;
     std::cout << "c = " << c << std::endl;
-    std::cout << "c * 2 = " << (c * 2) << std::endl;
+    std::cout << "c * 3 = " << (c * 3) << std::endl;
     std::cout << "c * 2 = " << (c * 2.0) << std::endl;
+}
+
+void test_board() {
+    Hex::Board board{{5, 5}};
+
+    for (int x = -10; x <= board.getSize().x + 9; ++x) {
+        board.playerOnePlace({x, 0});
+        board.playerTwoPlace({x, 1});
+        board.playerOnePlace({x, x});
+    }
+    
+    std::cout << board << std::endl;
 }
 
 int main() {

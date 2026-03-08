@@ -8,10 +8,11 @@ std::ostream& operator<<(std::ostream& lhs, const Hex::TileType &rhs) {
 
 std::ostream& operator<<(std::ostream& lhs, const Hex::Board &rhs) {
     constexpr int displacementSize = 2;
+    constexpr int drawBounds = 0;
     int displacement = 0;
-    for (int y = -1; y <= rhs.getSize().y; ++y) {
+    for (int y = -drawBounds; y < rhs.getSize().y + drawBounds; ++y) {
         lhs << std::string(displacement * displacementSize, ' ');
-        for (int x = -1; x <= rhs.getSize().x; ++x) {
+        for (int x = -drawBounds; x < rhs.getSize().x + drawBounds; ++x) {
             Hex::TileType tile = rhs.getTile({x, y});
             lhs << tile << " ";
         }
