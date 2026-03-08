@@ -29,11 +29,11 @@ vec2<T> operator*(const vec2<T> &lhs, const T &rhs) {
 }
 
 // Convert vec2<int> to vec2<double> when multiplying with double
-vec2<double> operator*(const vec2<int> &lhs, const double &rhs) {
+inline vec2<double> operator*(const vec2<int> &lhs, const double &rhs) { // inline suggested by claude
     return vec2<double>{lhs.x * rhs, lhs.y * rhs};
 }
 
-vec2<double> operator*(const vec2<double> &lhs, const int &rhs) {
+inline vec2<double> operator*(const vec2<double> &lhs, const int &rhs) { // inline suggested by claude
     return vec2<double>{lhs.x * rhs, lhs.y * rhs};
 }
 
