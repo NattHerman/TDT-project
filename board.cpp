@@ -9,9 +9,9 @@ std::ostream& operator<<(std::ostream& lhs, const Hex::TileType &rhs) {
 std::ostream& operator<<(std::ostream& lhs, const Hex::Board &rhs) {
     constexpr int displacementSize = 2;
     int displacement = 0;
-    for (int x = -1; x <= rhs.getSize().x; ++x) {
+    for (int y = -1; y <= rhs.getSize().y; ++y) {
         lhs << std::string(displacement * displacementSize, ' ');
-        for (int y = -1; y <= rhs.getSize().y; ++y) {
+        for (int x = -1; x <= rhs.getSize().x; ++x) {
             Hex::TileType tile = rhs.getTile({x, y});
             lhs << tile << " ";
         }
