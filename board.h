@@ -55,3 +55,4 @@ public:
 } // Hex namespace
 
 std::ostream& operator<<(std::ostream& lhs, Hex::TileType rhs);
+std::ostream& operator<<(std::ostream& lhs, Hex::Board rhs);

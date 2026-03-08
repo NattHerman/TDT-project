@@ -6,6 +6,20 @@ std::ostream& operator<<(std::ostream& lhs, Hex::TileType rhs) {
     return lhs;
 }
 
+std::ostream& operator<<(std::ostream& lhs, Hex::Board rhs) {
+    int displacement = 0;
+    int displacementSize = 2;
+    for (std::vector<Hex::TileType> col : rhs.getBoard()) {
+        lhs << std::string(displacement * displacementSize, ' ');
+        for (Hex::TileType tile : col) {
+            lhs << tile << " ";
+        }
+        lhs << "\n";
+        displacement++;
+    }
+    
+    return lhs;
+}
 
 bool Hex::Board::tileIsPlayer1Edge(vec2<int> tile) {
     bool onXEdge = tile.x == -1 || tile.x == size.x;
