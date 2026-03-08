@@ -1,4 +1,11 @@
 #include "board.h"
+#include <cmath>
+
+std::ostream& operator<<(std::ostream& lhs, Hex::TileType rhs) {
+    lhs << Hex::tileToString.at(rhs);
+    return lhs;
+}
+
 
 bool Hex::Board::tileIsPlayer1Edge(vec2<int> tile) {
     bool onXEdge = tile.x == -1 || tile.x == size.x;
@@ -42,6 +49,8 @@ Hex::TileType Hex::Board::getTile(vec2<int> tile) {
     } else if (isP2Edge) {
         return TileType::EdgePlayerTwo;
     }
+
+    return TileType::OutOfBounds;
 }
 
 bool Hex::Board::playerOnePlace(vec2<int> tile) {
@@ -64,3 +73,14 @@ bool Hex::Board::playerTwoPlace(vec2<int> tile) {
     return true;
 }
 
+Hex::Board::Board(vec2<int> size): size{size} {
+    // Allocate board memory, and populate board vectors
+    board.reserve(size.x);
+    for (int x = 0; x < size.x; ++x) {
+        board.emplace_back(size.y, TileType::Empty); // Claude suggestion, more efficient
+    }
+
+    int maxPossibleMoves = size.x * size.y / 2;
+    stonesPlayerOne.reserve(maxPossibleMoves);
+    stonesPlayerTwo.reserve(maxPossibleMoves);
+}

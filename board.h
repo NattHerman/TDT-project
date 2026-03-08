@@ -3,6 +3,7 @@
 #include <vector>
 #include <AnimationWindow.h>
 #include "vec2.h"
+#include <ostream>
 
 namespace Hex {
 
@@ -13,6 +14,17 @@ enum class TileType {
     EdgePlayerOne,
     EdgePlayerTwo,
     EdgeBoth,
+    OutOfBounds,
+};
+
+inline std::unordered_map<TileType, std::string> tileToString {
+    {TileType::Empty, " -"},
+    {TileType::StonePlayerOne, " 1"},
+    {TileType::StonePlayerTwo, " 2"},
+    {TileType::EdgePlayerOne, "E1"},
+    {TileType::EdgePlayerTwo, "E2"},
+    {TileType::EdgeBoth, "EB"},
+    {TileType::OutOfBounds, " _"},
 };
 
 class Board {
@@ -31,6 +43,8 @@ class Board {
 
 public:
     TileType getTile(vec2<int> tile);
+    vec2<int> getSize() const { return size; };
+    std::vector<std::vector<TileType>> getBoard() const { return board; };
 
     bool playerOnePlace(vec2<int> tile);
     bool playerTwoPlace(vec2<int> tile);
@@ -39,3 +53,5 @@ public:
 };
 
 } // Hex namespace
+
+std::ostream& operator<<(std::ostream& lhs, Hex::TileType rhs);
