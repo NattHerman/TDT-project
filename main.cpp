@@ -1,6 +1,7 @@
 #include <iostream>
 #include <AnimationWindow.h>
 #include "board.h"
+#include "game.h"
 
 void test_vec2_operators() {
     Hex::vec2<int> a{1, 2};
@@ -32,6 +33,29 @@ void test_board() {
     std::cout << board << std::endl;
 }
 
+void test_game() {
+    std::vector<Hex::vec2<int>> moves = {
+        {2, 0},
+        {2, 2},
+        {1, 2},
+        {1, 3},
+        {1, 3},
+        {1, 4},
+        {0, 4},
+    };
+
+    Hex::Game game{{5, 5}};
+
+    for (Hex::vec2<int> move : moves) {
+        bool playerOnesTurn = game.getTurn() == Hex::Turn::Player1;
+        std::cout << (playerOnesTurn ? "Turn: Player One" : "Turn: Player Two") << std::endl;
+        std::cout << "Move: " << move << std::endl;
+        
+        std::cout << "Move " << (game.takeTurn(move) ? "succeded" : "failed") << std::endl;
+        std::cout << game.getBoard() << std::endl;
+    }
+}
+
 int main() {
     std::cout << "Hello, World!" << std::endl;
     
@@ -52,6 +76,8 @@ int main() {
         window.next_frame();
     }
     */
+
+    test_game();
 
     return 0;
 }

@@ -8,7 +8,7 @@ std::ostream& operator<<(std::ostream& lhs, const Hex::TileType &rhs) {
 
 std::ostream& operator<<(std::ostream& lhs, const Hex::Board &rhs) {
     constexpr int displacementSize = 2;
-    constexpr int drawBounds = 0;
+    constexpr int drawBounds = 1;
     int displacement = 0;
     for (int y = -drawBounds; y < rhs.getSize().y + drawBounds; ++y) {
         lhs << std::string(displacement * displacementSize, ' ');

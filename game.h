@@ -24,6 +24,7 @@ class Game {
 
 public:
     Turn getTurn() const;
+    Board getBoard() const { return board; };
     GameState getState() const { return state; };
     bool takeTurn(const vec2<int> &move);
 
