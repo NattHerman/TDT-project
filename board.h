@@ -49,7 +49,7 @@ public:
     bool playerOnePlace(const vec2<int> &tile);
     bool playerTwoPlace(const vec2<int> &tile);
 
-    Board(vec2<int> size); // initialize board, stonesPlayerOne and stonesPlayerTwo sizes
+    Board(const vec2<int> &size); // initialize board, stonesPlayerOne and stonesPlayerTwo sizes
 };
 
 } // Hex namespace

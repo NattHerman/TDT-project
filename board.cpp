@@ -89,7 +89,7 @@ bool Hex::Board::playerTwoPlace(const vec2<int> &tile) {
     return true;
 }
 
-Hex::Board::Board(vec2<int> size): size{size} {
+Hex::Board::Board(const vec2<int> &size): size{size} {
     // Allocate board memory, and populate board vectors
     board.reserve(size.x);
     for (int x = 0; x < size.x; ++x) {

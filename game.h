@@ -5,20 +5,28 @@
 namespace Hex {
 
 enum class GameState {
-    Ongoing,
+    Ongoing = 0,
     Player1Won,
     Player2Won,
 };
 
-class Game {
-    int turn = 1;
-    GameState state = GameState::Ongoing;
+enum class Turn {
+    Player1 = 1,
+    Player2,
+};
 
+class Game {
+    int turnCounter = 1;
+    GameState state = GameState::Ongoing;
     Board board;
 
-    GameState searchForWin();
+    GameState searchForWin(); // Look for a path of stones going from one side to the other.
 
 public:
+    Turn getTurn() const;
+    GameState getState() const { return state; };
+    bool takeTurn(const vec2<int> &move);
+
     Game(const vec2<int> &boardSize);
 };
 
