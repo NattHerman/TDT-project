@@ -1,4 +1,4 @@
-#include "board.h"
+#include "Board.h"
 #include <cmath>
 
 std::ostream& operator<<(std::ostream& lhs, const Hex::TileType &rhs) {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <AnimationWindow.h>
-#include "board.h"
-#include "game.h"
+#include "Board.h"
+#include "Game.h"
 
 void test_vec2_operators() {
     Hex::vec2<int> a{1, 2};

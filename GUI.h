@@ -1,10 +1,12 @@
 #pragma once
 
-#include "board.h"
+#include "widgets/Button.h"
+#include "Board.h"
+
 namespace Hex {
 
-class GUI {
-    void drawBoard(const Board &board);
+class GUI : TDT4102::AnimationWindow {
+
 };
 
 } // namespace Hex

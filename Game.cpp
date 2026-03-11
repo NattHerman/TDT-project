@@ -1,4 +1,4 @@
-#include "game.h"
+#include "Game.h"
 
 Hex::Turn Hex::Game::getTurn() const {
     bool turnIsOdd = turnCounter % 2 == 1;
