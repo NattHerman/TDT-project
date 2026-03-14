@@ -18,17 +18,17 @@ enum class Turn {
 class Game {
     int turnCounter = 1;
     GameState state = GameState::Ongoing;
-    Board board;
+    std::shared_ptr<Board> board;
 
     GameState searchForWin(); // Look for a path of stones going from one side to the other.
 
 public:
     Turn getTurn() const;
-    Board getBoard() const { return board; };
+    std::shared_ptr<Board>  getBoard() const { return board; };
     GameState getState() const { return state; };
     bool takeTurn(const vec2<int> &move);
 
-    Game(const vec2<int> &boardSize);
+    Game(const vec2<int> &boardSize): board{std::make_shared<Board>(boardSize)} {};
 };
 
 } // namespace Hex

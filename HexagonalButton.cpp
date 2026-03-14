@@ -15,23 +15,33 @@ Hex::vec2<int> Hex::HexagonalButton::getScreenPosition() const {
     return static_cast<vec2<int>>(screenPos);
 }
 
-void Hex::HexagonalButton::draw() {
+void Hex::HexagonalButton::update() {
     constexpr int vertexCount = 6;
-    std::vector<TDT4102::Point> vertices;
-    vertices.reserve(vertexCount);
 
-    vec2<int> screnPos = getScreenPosition();
+    vec2<int> screenPos = getScreenPosition();
 
     constexpr double angleIncrement = 2.0*M_PI / float(vertexCount);
     double angle = 0.0;
     for (int i = 0; i < vertexCount; ++i) {
         vec2<double> vertex{
-            radius * std::cos(angle) + screnPos.x,
-            radius * std::sin(angle) + screnPos.y
+            radius * std::cos(angle) + screenPos.x,
+            radius * std::sin(angle) + screenPos.y
         };
 
-        vertices.emplace_back(vertex);
+        if (vertices.size() <= i) {
+            vertices.emplace_back(vertex);
+        } else {
+            vertices.at(i) = std::move(vertex);
+        }
+
         angle += angleIncrement;
+    }
+}
+
+
+void Hex::HexagonalButton::draw() {
+    if (vertices.size() < 6) {
+        throw std::runtime_error("update() must be called before draw().");
     }
   
     // Draw top quad

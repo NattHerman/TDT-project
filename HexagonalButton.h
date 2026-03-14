@@ -5,22 +5,42 @@
 
 namespace Hex {
 
+enum class ButtonVisualState {
+    Default,
+    Selected,
+    Player1,
+    Player2,
+};
+
 class HexagonalButton {
     vec2<int> tile; // Which tile on the board this button corresponds to.
     int radius = 25;
-    bool isSelected = false;
 
+    // Variables that change when updated
+    ButtonVisualState visualState = ButtonVisualState::Default;
+    TDT4102::Color color = TDT4102::Color::black;
+    std::vector<TDT4102::Point> vertices;
+    vec2<int> screenPosition;
+
+    // Pointers to objects shared between all tile buttons
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr;
+    std::shared_ptr<Board> boardPtr;
 
-    TDT4102::Color d;
+    vec2<int> getScreenPosition() const;
+    ButtonVisualState getTileState() const;
 
 public:
+    void update();
     void draw();
-    vec2<int> getScreenPosition() const;
 
-    HexagonalButton(const vec2<int> &tile, const std::shared_ptr<TDT4102::AnimationWindow> &windowPtr): tile{tile}, windowPtr{windowPtr} {};
-
-    friend class GUI;
+    // Constructor
+    HexagonalButton(
+        const vec2<int> &tile,
+        const std::shared_ptr<TDT4102::AnimationWindow> &windowPtr,
+        const std::shared_ptr<Board> &boardPtr
+    ): tile{tile}, windowPtr{windowPtr}, boardPtr{boardPtr} {
+        vertices.reserve(6); // 6 vertices in a hexagon
+    };
 };
 
 } // namespace Hex

@@ -53,7 +53,7 @@ void test_game() {
         std::cout << "Move: " << move << std::endl;
         
         std::cout << "Move " << (game.takeTurn(move) ? "succeded" : "failed") << std::endl;
-        std::cout << game.getBoard() << std::endl;
+        std::cout << *(game.getBoard()) << std::endl;
     }
 }
 
@@ -79,12 +79,13 @@ int main() {
     */
 
     
+    Hex::Game game{{5, 5}};
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
 
     std::vector<Hex::HexagonalButton> buttons;
     for (int x = 0; x < 11; ++x) {
         for (int y = 0; y < 11; ++y) {
-            Hex::HexagonalButton button{{x, y}, windowPtr};
+            Hex::HexagonalButton button{{x, y}, windowPtr, game.getBoard()};
             buttons.emplace_back(button);
         }
     }
@@ -92,6 +93,7 @@ int main() {
     while (!windowPtr->should_close())
     {
         for (Hex::HexagonalButton button : buttons) {
+            button.update();
             button.draw();
         }
         windowPtr->next_frame();
