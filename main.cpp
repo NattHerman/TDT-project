@@ -2,6 +2,7 @@
 #include <AnimationWindow.h>
 #include "Board.h"
 #include "Game.h"
+#include "HexagonalButton.h"
 
 void test_vec2_operators() {
     Hex::vec2<int> a{1, 2};
@@ -77,7 +78,26 @@ int main() {
     }
     */
 
-    test_game();
+    // std::shared_ptr<Hex::GUI> testGUI = std::make_shared<Hex::GUI>(new Hex::GUI{{100, 100}});
+    TDT4102::AnimationWindow testGUI;
+    Hex::HexagonalButton testButton{{0, 0}};
+
+    std::vector<Hex::HexagonalButton> buttons;
+    for (int x = 0; x < 11; ++x) {
+        for (int y = 0; y < 11; ++y) {
+            Hex::HexagonalButton button{{x, y}};
+            buttons.emplace_back(button);
+        }
+    }
+
+    while (!testGUI.should_close())
+    {
+        for (Hex::HexagonalButton button : buttons) {
+            button.draw(testGUI);
+        }
+        testGUI.next_frame();
+    }
+    
 
     return 0;
 }
