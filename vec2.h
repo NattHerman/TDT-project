@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include "Point.h"
 
 namespace Hex {
 
@@ -9,6 +10,17 @@ struct vec2 {
     // A 2-dimensional math vector
     T x;
     T y;
+
+    // Cast from vec<T> to TDT4102::Point. From Claude
+    explicit operator TDT4102::Point() const {
+        return TDT4102::Point{static_cast<int>(x), static_cast<int>(y)};
+    }
+
+    // Cast from vec<T> to vec<U>. Also with help from Claude
+    template <typename U>
+    explicit operator vec2<U>() const {
+        return vec2<U>{static_cast<U>(x), static_cast<U>(y)};
+    }
 };
 
 // Math operators where both operand types are the same
