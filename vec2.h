@@ -12,7 +12,7 @@ struct vec2 {
     T y;
 
     // Cast from vec<T> to TDT4102::Point. From Claude
-    explicit operator TDT4102::Point() const {
+    operator TDT4102::Point() const {
         return TDT4102::Point{static_cast<int>(x), static_cast<int>(y)};
     }
 
