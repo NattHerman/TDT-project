@@ -78,27 +78,25 @@ int main() {
     }
     */
 
-    // std::shared_ptr<Hex::GUI> testGUI = std::make_shared<Hex::GUI>(new Hex::GUI{{100, 100}});
-    TDT4102::AnimationWindow testGUI;
-    Hex::HexagonalButton testButton{{0, 0}};
+    
+    std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
 
     std::vector<Hex::HexagonalButton> buttons;
     for (int x = 0; x < 11; ++x) {
         for (int y = 0; y < 11; ++y) {
-            Hex::HexagonalButton button{{x, y}};
+            Hex::HexagonalButton button{{x, y}, windowPtr};
             buttons.emplace_back(button);
         }
     }
 
-    while (!testGUI.should_close())
+    while (!windowPtr->should_close())
     {
         for (Hex::HexagonalButton button : buttons) {
-            button.draw(testGUI);
+            button.draw();
         }
-        testGUI.next_frame();
+        windowPtr->next_frame();
     }
     
-
     return 0;
 }
 

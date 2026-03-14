@@ -1,9 +1,9 @@
 #include "HexagonalButton.h"
 #include <cmath>
 
-Hex::vec2<int> Hex::HexagonalButton::getScreenPosition(const TDT4102::AnimationWindow &window) const {
+Hex::vec2<int> Hex::HexagonalButton::getScreenPosition() const {
     // vec2<double> boardPos = static_cast<vec2<double>>(parentGUI->boardPosition);
-    vec2<double> boardPos = {window.width() / 10, window.height() / 2};
+    vec2<double> boardPos = {windowPtr->width() / 10, windowPtr->height() / 2};
 
     static constexpr double angle = 2.0*M_PI / 12.0;
 
@@ -15,12 +15,12 @@ Hex::vec2<int> Hex::HexagonalButton::getScreenPosition(const TDT4102::AnimationW
     return static_cast<vec2<int>>(screenPos);
 }
 
-void Hex::HexagonalButton::draw(TDT4102::AnimationWindow &window) {
+void Hex::HexagonalButton::draw() {
     constexpr int vertexCount = 6;
     std::vector<TDT4102::Point> vertices;
     vertices.reserve(vertexCount);
 
-    vec2<int> screnPos = getScreenPosition(window);
+    vec2<int> screnPos = getScreenPosition();
 
     constexpr double angleIncrement = 2.0*M_PI / float(vertexCount);
     double angle = 0.0;
@@ -35,13 +35,13 @@ void Hex::HexagonalButton::draw(TDT4102::AnimationWindow &window) {
     }
   
     // Draw top quad
-    window.draw_quad(
+    windowPtr->draw_quad(
         vertices.at(0), vertices.at(1), vertices.at(2), vertices.at(3),
         TDT4102::Color::cadet_blue
     );
 
     // Draw bottom quad
-    window.draw_quad(
+    windowPtr->draw_quad(
         vertices.at(3), vertices.at(4), vertices.at(5), vertices.at(0),
         TDT4102::Color::cadet_blue
     );
