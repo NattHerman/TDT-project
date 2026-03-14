@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Board.h"
+#include "Color.h"
+
 namespace Hex {
 
 class HexagonalButton {
@@ -8,9 +10,13 @@ class HexagonalButton {
     int radius = 25;
     bool isSelected = false;
 
+    TDT4102::Color d;
+
 public:
-    void draw();
-    vec2<int> getScreenPosition();
+    void draw(TDT4102::AnimationWindow &window);
+    vec2<int> getScreenPosition(const TDT4102::AnimationWindow &window) const;
+
+    HexagonalButton(const vec2<int> &tile): tile{tile} {};
 
     friend class GUI;
 };
