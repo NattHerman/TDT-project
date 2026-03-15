@@ -40,6 +40,16 @@ vec2<T> operator-(const vec2<T> &lhs, const vec2<T> &rhs) {
     return vec2<T>{lhs.x - rhs.x, lhs.y - rhs.y};
 }
 
+template <typename T>
+bool operator!=(const vec2<T> &lhs, const vec2<T> &rhs) {
+    return lhs.x != rhs.x || lhs.y != rhs.y;
+}
+
+template <typename T>
+bool operator==(const vec2<T> &lhs, const vec2<T> &rhs) {
+    return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
 // vec2<int> * int = vec2<int> and vec2<double> * double = vec2<double>
 template <typename T>
 vec2<T> operator*(const vec2<T> &lhs, const T &rhs) {
