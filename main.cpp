@@ -79,12 +79,34 @@ int main() {
     */
 
     
-    Hex::Game game{{5, 5}};
+    std::vector<Hex::vec2<int>> moves = {
+        {2, 0},
+        {2, 2},
+        {1, 2},
+        {1, 3},
+        {1, 3},
+        {1, 4},
+        {0, 4},
+    };
+
+    Hex::Game game{{4, 4}};
+
+    for (Hex::vec2<int> move : moves) {
+        bool playerOnesTurn = game.getTurn() == Hex::Turn::Player1;
+        std::cout << (playerOnesTurn ? "Turn: Player One" : "Turn: Player Two") << std::endl;
+        std::cout << "Move: " << move << std::endl;
+        
+        std::cout << "Move " << (game.takeTurn(move) ? "succeded" : "failed") << std::endl;
+        std::cout << *(game.getBoard()) << std::endl;
+    }
+
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
+    windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
 
     std::vector<Hex::HexagonalButton> buttons;
-    for (int x = 0; x < 11; ++x) {
-        for (int y = 0; y < 11; ++y) {
+    Hex::vec2<int> boardSize = game.getBoard()->getSize();
+    for (int x = 0; x < boardSize.x; ++x) {
+        for (int y = 0; y < boardSize.y; ++y) {
             Hex::HexagonalButton button{{x, y}, windowPtr, game.getBoard()};
             buttons.emplace_back(button);
         }

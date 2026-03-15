@@ -1,5 +1,6 @@
 #include "HexagonalButton.h"
 #include <cmath>
+#include <iostream>
 
 Hex::vec2<int> Hex::HexagonalButton::getScreenPosition() const {
     // vec2<double> boardPos = static_cast<vec2<double>>(parentGUI->boardPosition);
@@ -18,14 +19,14 @@ Hex::vec2<int> Hex::HexagonalButton::getScreenPosition() const {
 void Hex::HexagonalButton::update() {
     constexpr int vertexCount = 6;
 
-    vec2<int> screenPos = getScreenPosition();
+    screenPosition = getScreenPosition();
 
     constexpr double angleIncrement = 2.0*M_PI / float(vertexCount);
     double angle = 0.0;
     for (int i = 0; i < vertexCount; ++i) {
         vec2<double> vertex{
-            radius * std::cos(angle) + screenPos.x,
-            radius * std::sin(angle) + screenPos.y
+            radius * std::cos(angle) + screenPosition.x,
+            radius * std::sin(angle) + screenPosition.y
         };
 
         if (vertices.size() <= i) {
@@ -36,6 +37,10 @@ void Hex::HexagonalButton::update() {
 
         angle += angleIncrement;
     }
+
+    // Color stuff. VisualState -> Color
+    visualState = getTileState();
+    color = buttonVisualStateToColor.at(visualState);
 }
 
 
@@ -47,12 +52,40 @@ void Hex::HexagonalButton::draw() {
     // Draw top quad
     windowPtr->draw_quad(
         vertices.at(0), vertices.at(1), vertices.at(2), vertices.at(3),
-        TDT4102::Color::cadet_blue
+        color
     );
 
     // Draw bottom quad
     windowPtr->draw_quad(
         vertices.at(3), vertices.at(4), vertices.at(5), vertices.at(0),
-        TDT4102::Color::cadet_blue
+        color
     );
+}
+
+Hex::ButtonVisualState Hex::HexagonalButton::getTileState() const {
+    TileType boardTileType = boardPtr->getTile(tile);
+
+    if (boardTileType == TileType::StonePlayerOne) {
+        return ButtonVisualState::Player1;
+    } if (boardTileType == TileType::StonePlayerTwo) {
+        return ButtonVisualState::Player2;
+    }
+
+    if (getButtonIsSelected()) {
+        return ButtonVisualState::Selected;
+    }
+
+    return ButtonVisualState::Default;
+}
+
+bool Hex::HexagonalButton::getButtonIsSelected() const {
+    vec2<double> mousePos = windowPtr->get_mouse_coordinates();
+
+    double mouseDistanceSquared = pow(mousePos.x - screenPosition.x, 2) + pow(mousePos.y - screenPosition.y, 2);
+
+    // std::cout << "mouse: " << mousePos << "tile: " << screenPosition << "\n";
+    // std::cout << "dist:" << sqrt(mouseDistanceSquared) << "\n";
+    // std::cout << "is selected: " << (mouseDistanceSquared < radius*radius ? "true" : "false") << std::endl;
+
+    return mouseDistanceSquared < radius*radius;
 }
