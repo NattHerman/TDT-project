@@ -89,7 +89,7 @@ int main() {
         // {0, 4},
     };
 
-    Hex::Game game{{11, 11}};
+    Hex::Game game{{11,11}};
 
     for (Hex::vec2<int> move : moves) {
         bool playerOnesTurn = game.getTurn() == Hex::Turn::Player1;
@@ -108,7 +108,7 @@ int main() {
     for (int x = 0; x < boardSize.x; ++x) {
         for (int y = 0; y < boardSize.y; ++y) {
             Hex::HexagonalButton button{{x, y}, windowPtr, game.getBoard()};
-            button.setCallback([&game](Hex::vec2<int> tile) { // Lamda function with help from claude, because it is not in pensum
+            button.setCallback([&game](Hex::vec2<int> tile) { // Lamda function with help from claude, because it is not in the syllabus
                 game.takeTurn(tile);
             });
             buttons.emplace_back(button);
@@ -117,7 +117,7 @@ int main() {
 
     while (!windowPtr->should_close())
     {
-        for (Hex::HexagonalButton button : buttons) {
+        for (Hex::HexagonalButton &button : buttons) {
             button.update();
             button.draw();
         }

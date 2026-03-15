@@ -39,6 +39,7 @@ class HexagonalButton {
 
     // Function that is called when button is pressed, with tile as input.
     std::function<void(vec2<int>)> callBack;
+    bool firstFrameOfClick = false;
 
 public:
     void update();
