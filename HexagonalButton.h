@@ -37,9 +37,14 @@ class HexagonalButton {
     bool getButtonIsSelected() const; // True when cursor is hovering over button.
     ButtonVisualState getTileState() const;
 
+    // Function that is called when button is pressed, with tile as input.
+    std::function<void(vec2<int>)> callBack;
+
 public:
     void update();
     void draw();
+
+    void setCallback(std::function<void(vec2<int>)> callBack);
 
     // Constructor
     HexagonalButton(

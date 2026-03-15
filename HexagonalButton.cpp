@@ -19,28 +19,38 @@ Hex::vec2<int> Hex::HexagonalButton::getScreenPosition() const {
 void Hex::HexagonalButton::update() {
     constexpr int vertexCount = 6;
 
-    screenPosition = getScreenPosition();
+    Hex::vec2<int> newScreenPos = getScreenPosition();
+    bool screenPosChanged = newScreenPos != screenPosition;
 
-    constexpr double angleIncrement = 2.0*M_PI / float(vertexCount);
-    double angle = 0.0;
-    for (int i = 0; i < vertexCount; ++i) {
-        vec2<double> vertex{
-            radius * std::cos(angle) + screenPosition.x,
-            radius * std::sin(angle) + screenPosition.y
-        };
+    if (screenPosChanged) {
+        screenPosition = newScreenPos;
 
-        if (vertices.size() <= i) {
-            vertices.emplace_back(vertex);
-        } else {
-            vertices.at(i) = std::move(vertex);
+        constexpr double angleIncrement = 2.0*M_PI / float(vertexCount);
+        double angle = 0.0;
+        for (int i = 0; i < vertexCount; ++i) {
+            vec2<double> vertex{
+                radius * std::cos(angle) + screenPosition.x,
+                radius * std::sin(angle) + screenPosition.y
+            };
+
+            if (vertices.size() <= i) {
+                vertices.emplace_back(vertex);
+            } else {
+                vertices.at(i) = std::move(vertex);
+            }
+
+            angle += angleIncrement;
         }
-
-        angle += angleIncrement;
     }
 
     // Color stuff. VisualState -> Color
     visualState = getTileState();
     color = buttonVisualStateToColor.at(visualState);
+
+    // Detect button press.
+    if (callBack && windowPtr->is_left_mouse_button_down() && visualState == ButtonVisualState::Selected) {
+        callBack(tile);
+    }
 }
 
 
@@ -88,4 +98,8 @@ bool Hex::HexagonalButton::getButtonIsSelected() const {
     // std::cout << "is selected: " << (mouseDistanceSquared < radius*radius ? "true" : "false") << std::endl;
 
     return mouseDistanceSquared < radius*radius;
+}
+
+void Hex::HexagonalButton::setCallback(std::function<void(vec2<int>)> callBack) {
+    this->callBack = callBack;
 }

@@ -80,16 +80,16 @@ int main() {
 
     
     std::vector<Hex::vec2<int>> moves = {
-        {2, 0},
-        {2, 2},
-        {1, 2},
-        {1, 3},
-        {1, 3},
-        {1, 4},
-        {0, 4},
+        // {2, 0},
+        // {2, 2},
+        // {1, 2},
+        // {1, 3},
+        // {1, 3},
+        // {1, 4},
+        // {0, 4},
     };
 
-    Hex::Game game{{4, 4}};
+    Hex::Game game{{11, 11}};
 
     for (Hex::vec2<int> move : moves) {
         bool playerOnesTurn = game.getTurn() == Hex::Turn::Player1;
@@ -108,6 +108,9 @@ int main() {
     for (int x = 0; x < boardSize.x; ++x) {
         for (int y = 0; y < boardSize.y; ++y) {
             Hex::HexagonalButton button{{x, y}, windowPtr, game.getBoard()};
+            button.setCallback([&game](Hex::vec2<int> tile) { // Lamda function with help from claude, because it is not in pensum
+                game.takeTurn(tile);
+            });
             buttons.emplace_back(button);
         }
     }
