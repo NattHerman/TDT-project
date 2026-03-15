@@ -21,6 +21,12 @@ struct vec2 {
     explicit operator vec2<U>() const {
         return vec2<U>{static_cast<U>(x), static_cast<U>(y)};
     }
+
+    // Constructors
+    vec2() = default;
+    vec2(T x, T y): x{x}, y{y} {};
+    // claude suggestion, construct from TDT4102::Point to vec2<T>
+    vec2(const TDT4102::Point &point): x{point.x}, y{point.y} {} 
 };
 
 // Math operators where both operand types are the same
