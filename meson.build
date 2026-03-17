@@ -24,6 +24,7 @@ exe = executable(
 'Board.cpp',
 'Game.cpp',
 'HexagonalButton.cpp',
+'UI/UINode.cpp',
 'main.cpp',
   dependencies : [std_lib_facilities_dep, animationwindow_dep],
   cpp_args : compiler_flags,
