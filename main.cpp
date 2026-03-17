@@ -3,6 +3,7 @@
 #include "Board.h"
 #include "Game.h"
 #include "HexagonalButton.h"
+#include "UI/UINode.h"
 
 void test_vec2_operators() {
     Hex::vec2<int> a{1, 2};
@@ -57,28 +58,7 @@ void test_game() {
     }
 }
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
-    
-    /*
-    TDT4102::AnimationWindow window;
-    TDT4102::Image image("test.jpg");
-
-    int xPosition = 0;
-    while(!window.should_close()) {
-        xPosition = xPosition + 1;
-        if(xPosition > 200*2) {
-            xPosition = 0;
-        }
-        TDT4102::Point position {xPosition, 100};
-        window.draw_rectangle(position, 100, 100);
-        window.draw_image(position, image, 300, 300, 45.0, {150, 150});
-
-        window.next_frame();
-    }
-    */
-
-    
+void test_hexbutton() {
     std::vector<Hex::vec2<int>> moves = {
         // {2, 0},
         // {2, 2},
@@ -123,6 +103,22 @@ int main() {
         }
         windowPtr->next_frame();
     }
+}
+
+void printChildren(const std::shared_ptr<Hex::UI::UINode> &node, int layer = 0) {
+    std::cout << std::string(layer, '|') << node->getName() << "\n";
+    for (const std::shared_ptr<Hex::UI::UINode> &child : node->getChildren()) {
+        printChildren(child, layer + 1);
+    }
+}
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+
+    std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>("Root");
+    rootNode->addChild(std::make_shared<Hex::UI::UINode>("Child0"));
+
+    printChildren(rootNode);
     
     return 0;
 }

@@ -52,7 +52,7 @@ void Hex::HexagonalButton::update() {
     // Detect button press.
     if (callBack && windowPtr->is_left_mouse_button_down() && visualState == ButtonVisualState::Selected && firstFrameOfClick) {
         callBack(tile);
-    } 
+    }
     
     // Detect first frame of click.
     firstFrameOfClick = !windowPtr->is_left_mouse_button_down();
