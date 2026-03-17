@@ -39,6 +39,10 @@ public:
     UINode(std::string name): name{name} {}
 
     virtual ~UINode() {}
+
+    void printChildren(int layer = 0);
+
+
 };
 
 } // namespace UI

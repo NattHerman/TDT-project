@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "UINode.h"
 
 
@@ -48,5 +50,12 @@ Hex::vec2<int> Hex::UI::UINode::getPosition() const {
 void Hex::UI::UINode::update() {
     for (std::shared_ptr<Hex::UI::UINode> &child : children) {
         child->update();
+    }
+}
+
+void Hex::UI::UINode::printChildren(int layer) {
+    std::cout << std::string(layer, '|') << getName() << "\n";
+    for (const std::shared_ptr<Hex::UI::UINode> &child : getChildren()) {
+        child->printChildren(layer + 1);
     }
 }

@@ -105,21 +105,15 @@ void test_hexbutton() {
     }
 }
 
-void printChildren(const std::shared_ptr<Hex::UI::UINode> &node, int layer = 0) {
-    std::cout << std::string(layer, '|') << node->getName() << "\n";
-    for (const std::shared_ptr<Hex::UI::UINode> &child : node->getChildren()) {
-        printChildren(child, layer + 1);
-    }
-}
-
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
     std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>("Root");
     rootNode->addChild(std::make_shared<Hex::UI::UINode>("Child0"));
+    rootNode->addChild(std::make_shared<Hex::UI::UINode>("Child1"));
+    rootNode->getChildren().at(0)->addChild(std::make_shared<Hex::UI::UINode>("GrandChild"));
 
-    printChildren(rootNode);
+    rootNode->printChildren();
     
     return 0;
 }
-
