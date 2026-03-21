@@ -18,8 +18,6 @@ protected:
     std::shared_ptr<UINode> parent = nullptr; // nullptr means no parent.
     std::vector<std::shared_ptr<UINode>> children;
 
-    std::shared_ptr<TDT4102::AnimationWindow> windowPtr;
-
 public:
     void addChild(const std::shared_ptr<UINode> &child);
     std::shared_ptr<UINode> removeChild(const std::shared_ptr<UINode> &child);
@@ -41,8 +39,6 @@ public:
     virtual ~UINode() {}
 
     void printChildren(int layer = 0);
-
-
 };
 
 } // namespace UI
