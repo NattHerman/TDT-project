@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Board.h"
 #include "Color.h"
+
+#include "Board.h"
+#include "UI/UINode.h"
 
 namespace Hex {
 
@@ -19,14 +21,14 @@ inline std::unordered_map<ButtonVisualState, TDT4102::Color> buttonVisualStateTo
     {ButtonVisualState::Player2, TDT4102::Color{0x5676b1}},
 };
 
-class HexagonalButton {
+class HexagonalButton : UI::UINode {
     const vec2<int> tile; // Which tile on the board this button corresponds to.
     int radius = 25;
 
     // Variables that change when updated
     ButtonVisualState visualState = ButtonVisualState::Default;
     TDT4102::Color color = TDT4102::Color::black;
-    std::vector<TDT4102::Point> vertices;
+    std::vector<vec2<int>> vertices;
     vec2<int> screenPosition = {0, 0};
 
     // Pointers to objects shared between all tile buttons
@@ -42,8 +44,8 @@ class HexagonalButton {
     bool firstFrameOfClick = false;
 
 public:
-    void update();
-    void draw();
+    void update(); // Overriding parent method
+    void draw(); // Overriding parent method
 
     void setCallback(std::function<void(vec2<int>)> callBack);
     vec2<int> getTile() const { return tile; };

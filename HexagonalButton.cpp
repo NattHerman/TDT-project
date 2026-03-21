@@ -28,7 +28,7 @@ void Hex::HexagonalButton::update() {
         constexpr double angleIncrement = 2.0*M_PI / float(vertexCount);
         double angle = 0.0;
         for (int i = 0; i < vertexCount; ++i) {
-            vec2<double> vertex{
+            vec2<int> vertex{
                 radius * std::cos(angle) + screenPosition.x,
                 radius * std::sin(angle) + screenPosition.y
             };
@@ -54,6 +54,8 @@ void Hex::HexagonalButton::update() {
     
     // Detect first frame of click.
     firstFrameOfClick = !windowPtr->is_left_mouse_button_down();
+
+    updateChildren();
 }
 
 
@@ -73,6 +75,8 @@ void Hex::HexagonalButton::draw() {
         vertices.at(3), vertices.at(4), vertices.at(5), vertices.at(0),
         color
     );
+
+    drawChildren();
 }
 
 Hex::ButtonVisualState Hex::HexagonalButton::getTileState() const {
