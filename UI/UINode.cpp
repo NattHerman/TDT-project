@@ -46,10 +46,14 @@ Hex::vec2<int> Hex::UI::UINode::getPosition() const {
     return position + parent->getPosition(); 
 }
 
-void Hex::UI::UINode::update() {
+void Hex::UI::UINode::updateChildren() {
     for (std::shared_ptr<Hex::UI::UINode> &child : children) {
         child->update();
     }
+}
+
+void Hex::UI::UINode::update() {
+    updateChildren();
 }
 
 void Hex::UI::UINode::drawChildren() {

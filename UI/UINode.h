@@ -21,6 +21,8 @@ protected:
 
     // Every class that inherits UINode should call drawChildren() in its draw() implementation.
     void drawChildren();
+    // Every class that inherits UINode should call updateChildren() in its update() implementation.
+    void updateChildren();
 
 public:
     void addChild(const std::shared_ptr<UINode> &child);
