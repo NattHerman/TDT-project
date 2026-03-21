@@ -20,7 +20,7 @@ inline std::unordered_map<ButtonVisualState, TDT4102::Color> buttonVisualStateTo
 };
 
 class HexagonalButton {
-    vec2<int> tile; // Which tile on the board this button corresponds to.
+    const vec2<int> tile; // Which tile on the board this button corresponds to.
     int radius = 25;
 
     // Variables that change when updated
@@ -46,6 +46,8 @@ public:
     void draw();
 
     void setCallback(std::function<void(vec2<int>)> callBack);
+    vec2<int> getTile() const { return tile; };
+    int getRadius() const { return radius; };
 
     // Constructor
     HexagonalButton(
