@@ -88,9 +88,8 @@ void test_hexbutton() {
     for (int x = 0; x < boardSize.x; ++x) {
         for (int y = 0; y < boardSize.y; ++y) {
             Hex::HexagonalButton button{{x, y}, windowPtr, game.getBoard()};
-            button.setCallback([&game](Hex::vec2<int> tile) { // Lamda function with help from claude, because it is not in the syllabus
-                game.takeTurn(tile);
-            });
+            std::function<void(Hex::vec2<int>)> func = std::bind(&Hex::Game::takeTurn, &game, button.getTile());
+            button.setCallback(func);
             buttons.emplace_back(button);
         }
     }
@@ -105,15 +104,19 @@ void test_hexbutton() {
     }
 }
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
-
+void test_printChildren() {
     std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>("Root");
     rootNode->addChild(std::make_shared<Hex::UI::UINode>("Child0"));
     rootNode->addChild(std::make_shared<Hex::UI::UINode>("Child1"));
     rootNode->getChildren().at(0)->addChild(std::make_shared<Hex::UI::UINode>("GrandChild"));
 
     rootNode->printChildren();
+}
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+
+    test_hexbutton();
     
     return 0;
 }
