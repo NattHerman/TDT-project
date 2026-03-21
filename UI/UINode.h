@@ -10,6 +10,7 @@
 namespace Hex {
 namespace UI {
 
+// Inheritance courtesy of Claude
 class UINode : public std::enable_shared_from_this<UINode> {
 protected:
     vec2<int> position = {0, 0};
@@ -18,10 +19,14 @@ protected:
     std::shared_ptr<UINode> parent = nullptr; // nullptr means no parent.
     std::vector<std::shared_ptr<UINode>> children;
 
+    // Every class that inherits UINode should call drawChildren() in its draw() implementation.
+    void drawChildren();
+
 public:
     void addChild(const std::shared_ptr<UINode> &child);
     std::shared_ptr<UINode> removeChild(const std::shared_ptr<UINode> &child);
     std::shared_ptr<UINode> removeChild(int index);
+    void printChildren(int layer = 0);
 
     std::vector<std::shared_ptr<UINode>> getChildren() const { return children; }
     std::shared_ptr<UINode> getParent() const { return parent; }
@@ -30,15 +35,13 @@ public:
 
     // Also updates children.
     virtual void update();
-    virtual void draw() {};
+    virtual void draw();
 
     // Constructor
     UINode() = default;
     UINode(std::string name): name{name} {}
 
     virtual ~UINode() {}
-
-    void printChildren(int layer = 0);
 };
 
 } // namespace UI
