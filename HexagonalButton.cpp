@@ -47,8 +47,6 @@ void Hex::HexagonalButton::update() {
     visualState = getTileState();
     color = buttonVisualStateToColor.at(visualState);
 
-    std::cout << firstFrameOfClick << std::endl;
-
     // Detect button press.
     if (callBack && windowPtr->is_left_mouse_button_down() && visualState == ButtonVisualState::Selected && firstFrameOfClick) {
         callBack(tile);
