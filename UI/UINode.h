@@ -14,7 +14,6 @@ namespace UI {
 // Inheritance courtesy of Claude
 class UINode : public std::enable_shared_from_this<UINode> {
 protected:
-    vec2<int> position = {0, 0};
     rect<int> boundingBox;
     std::string name;
 
@@ -28,6 +27,8 @@ protected:
     virtual void updateBoundingBox();
 
 public:
+    vec2<int> position = {0, 0};
+
     void addChild(const std::shared_ptr<UINode> &child);
     std::shared_ptr<UINode> removeChild(const std::shared_ptr<UINode> &child);
     std::shared_ptr<UINode> removeChild(int index);
@@ -41,7 +42,7 @@ public:
     vec2<int> getPosition() const { return position; };
     vec2<int> getGlobalPosition() const;
     rect<int> getBoundingBox() const { return boundingBox; }
-    
+
     std::string getName() const { return name; }
 
     virtual void update();
