@@ -144,6 +144,15 @@ void test_printChildren() {
     rootNode->printChildren();
 }
 
+void test_engulf() {
+    Hex::rect<int> rectA{{1, 1}, {2, 1}};
+    Hex::rect<int> rectB{{3, -1}, {1, 4}};
+
+    rectA.engulf(rectB);
+
+    std::cout << rectA << std::endl;
+}
+
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
