@@ -1,9 +1,12 @@
 #include <iostream>
+
 #include <AnimationWindow.h>
+
 #include "Board.h"
 #include "Game.h"
 #include "HexagonalButton.h"
 #include "UI/UINode.h"
+#include "UI/HexGrid.h"
 
 void test_vec2_operators() {
     Hex::vec2<int> a{1, 2};
@@ -116,7 +119,29 @@ void test_printChildren() {
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
-    test_hexbutton();
+    std::shared_ptr<Hex::UI::HexGrid> rootNode = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
+
+    Hex::Game game{{11,11}};
+    std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
+    windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
+
+    Hex::vec2<int> boardSize = game.getBoard()->getSize();
+    for (int x = 0; x < boardSize.x; ++x) {
+        for (int y = 0; y < boardSize.y; ++y) {
+            // Initialize button
+            std::shared_ptr<Hex::HexagonalButton> button = std::make_shared<Hex::HexagonalButton>(Hex::vec2<int>{x, y}, windowPtr, game.getBoard());
+            std::function<void(Hex::vec2<int>)> func = std::bind(&Hex::Game::takeTurn, &game, button->getTile());
+            button->setCallback(func);
+
+            rootNode->addChild(button);
+        }
+    }
+
+    while (!windowPtr->should_close()) {
+        rootNode->update();
+        rootNode->draw();
+        windowPtr->next_frame();
+    }
     
     return 0;
 }
