@@ -28,14 +28,15 @@ public:
     void addChild(const std::shared_ptr<UINode> &child);
     std::shared_ptr<UINode> removeChild(const std::shared_ptr<UINode> &child);
     std::shared_ptr<UINode> removeChild(int index);
+
     void printChildren(int layer = 0);
 
     std::vector<std::shared_ptr<UINode>> getChildren() const { return children; }
+    std::shared_ptr<UINode> getChild(int i) const { return children.at(i); }
     std::shared_ptr<UINode> getParent() const { return parent; }
     vec2<int> getPosition() const;
     std::string getName() const { return name; }
 
-    // Also updates children.
     virtual void update();
     virtual void draw();
 
