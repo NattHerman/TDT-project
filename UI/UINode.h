@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "vec2.h"
+#include "rect.h"
 #include "AnimationWindow.h"
 
 namespace Hex {
@@ -14,6 +15,7 @@ namespace UI {
 class UINode : public std::enable_shared_from_this<UINode> {
 protected:
     vec2<int> position = {0, 0};
+    rect<int> boundingBox;
     std::string name;
 
     std::shared_ptr<UINode> parent = nullptr; // nullptr means no parent.
@@ -23,6 +25,7 @@ protected:
     void drawChildren();
     // Every class that inherits UINode should call updateChildren() in its update() implementation.
     void updateChildren();
+    virtual void updateBoundingBox();
 
 public:
     void addChild(const std::shared_ptr<UINode> &child);
@@ -34,7 +37,11 @@ public:
     std::vector<std::shared_ptr<UINode>> getChildren() const { return children; }
     std::shared_ptr<UINode> getChild(int i) const { return children.at(i); }
     std::shared_ptr<UINode> getParent() const { return parent; }
-    vec2<int> getPosition() const;
+
+    vec2<int> getPosition() const { return position; };
+    vec2<int> getGlobalPosition() const;
+    rect<int> getBoundingBox() const { return boundingBox; }
+    
     std::string getName() const { return name; }
 
     virtual void update();

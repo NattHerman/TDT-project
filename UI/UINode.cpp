@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "UINode.h"
+#include "HexTile.h"
 
 
 void Hex::UI::UINode::addChild(const std::shared_ptr<Hex::UI::UINode> &child) {
@@ -39,17 +40,18 @@ std::shared_ptr<Hex::UI::UINode> Hex::UI::UINode::removeChild(int index) {
     return nullptr;
 }
 
-Hex::vec2<int> Hex::UI::UINode::getPosition() const {
+Hex::vec2<int> Hex::UI::UINode::getGlobalPosition() const {
     if (parent == nullptr) {
         return position;
     }
-    return position + parent->getPosition(); 
+    return position + parent->getGlobalPosition(); 
 }
 
 void Hex::UI::UINode::updateChildren() {
     for (std::shared_ptr<Hex::UI::UINode> &child : children) {
         child->update();
     }
+    updateBoundingBox();
 }
 
 void Hex::UI::UINode::update() {
@@ -59,6 +61,14 @@ void Hex::UI::UINode::update() {
 void Hex::UI::UINode::drawChildren() {
     for (std::shared_ptr<Hex::UI::UINode> &child : children) {
         child->draw();
+    }
+}
+
+void Hex::UI::UINode::updateBoundingBox() {
+    boundingBox = Hex::rect<int>{}; // Reset bounding box.
+
+    for (std::shared_ptr<Hex::UI::UINode> &child : children) {
+        boundingBox.engulf(child->getBoundingBox() + child->getPosition());
     }
 }
 
