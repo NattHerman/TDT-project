@@ -25,6 +25,7 @@ exe = executable(
 'Game.cpp',
 'HexagonalButton.cpp',
 'UI/UINode.cpp',
+'UI/HexGrid.cpp',
 'main.cpp',
   dependencies : [std_lib_facilities_dep, animationwindow_dep],
   cpp_args : compiler_flags,
