@@ -50,7 +50,6 @@ void Hex::UI::UINode::updateChildren() {
     for (std::shared_ptr<Hex::UI::UINode> &child : children) {
         child->update();
     }
-    updateBoundingBox();
 }
 
 void Hex::UI::UINode::update() {
@@ -62,11 +61,6 @@ void Hex::UI::UINode::drawChildren() {
         child->draw();
     }
 }
-
-void Hex::UI::UINode::updateBoundingBox() {
-
-}
-
 
 void Hex::UI::UINode::draw() {
     drawChildren();
