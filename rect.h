@@ -2,9 +2,9 @@
 
 #include "vec2.h"
 
-// Axis-aligned rectangle
 namespace Hex {
 
+// Axis-aligned rectangle
 template <typename T>
 struct rect {
     vec2<T> position{0, 0};
