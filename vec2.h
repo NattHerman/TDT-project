@@ -50,19 +50,42 @@ bool operator==(const vec2<T> &lhs, const vec2<T> &rhs) {
     return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
+// MULTIPLICATION
+
 // vec2<int> * int = vec2<int> and vec2<double> * double = vec2<double>
 template <typename T>
 vec2<T> operator*(const vec2<T> &lhs, const T &rhs) {
     return vec2<T>{lhs.x * rhs, lhs.y * rhs};
 }
+template <typename T> // Mirror
+vec2<T> operator*(const T &rhs, const vec2<T> &lhs) { return lhs * rhs; }
 
 // Convert vec2<int> to vec2<double> when multiplying with double
 inline vec2<double> operator*(const vec2<int> &lhs, const double &rhs) { // inline suggested by claude
     return vec2<double>{lhs.x * rhs, lhs.y * rhs};
 }
+// Mirror
+inline vec2<double> operator*(const double &rhs, const vec2<int> &lhs) { return lhs * rhs; }
 
 inline vec2<double> operator*(const vec2<double> &lhs, const int &rhs) { // inline suggested by claude
     return vec2<double>{lhs.x * rhs, lhs.y * rhs};
+}
+// Mirror
+inline vec2<double> operator*(const int &rhs, const vec2<double> &lhs) { return lhs * rhs; }
+
+// DIVISION
+
+template <typename T>
+vec2<T> operator/(const vec2<T> &lhs, const T &rhs) {
+    return vec2<T>{lhs.x / rhs, lhs.y / rhs};
+}
+
+inline vec2<double> operator/(const vec2<int> &lhs, const double &rhs) {
+    return vec2<double>{lhs.x / rhs, lhs.y / rhs};
+}
+
+inline vec2<double> operator/(const vec2<double> &lhs, const int &rhs) {
+    return vec2<double>{lhs.x / rhs, lhs.y / rhs};
 }
 
 // Other operators
