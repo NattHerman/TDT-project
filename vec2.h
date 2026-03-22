@@ -96,3 +96,13 @@ std::ostream& operator<<(std::ostream &lhs, const vec2<T> &rhs) { // Claude ga p
 }
 
 } // Hex namespace
+
+template <typename T>
+Hex::vec2<T> std::min(const Hex::vec2<T> &a, const Hex::vec2<T> &b) {
+    return {std::min(a.x, b.x), std::min(a.y, b.y)};
+}
+
+template <typename T>
+Hex::vec2<T> std::max(const Hex::vec2<T> &a, const Hex::vec2<T> &b) {
+    return {std::max(a.x, b.x), std::max(a.y, b.y)};
+}
