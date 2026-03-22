@@ -20,9 +20,11 @@ void test_vec2_operators() {
     std::cout << "a - b = " << (a - b) << std::endl;
     std::cout << "a * 2 = " << (a * 2) << std::endl;
     std::cout << "a * 2.5 = " << (a * 2.5) << std::endl;
+    std::cout << "2.5 * a = " << (2.5 * a) << std::endl;
     std::cout << std::endl;
     std::cout << "c = " << c << std::endl;
     std::cout << "c * 3 = " << (c * 3) << std::endl;
+    std::cout << "3 * c = " << (3 * c) << std::endl;
     std::cout << "c * 2 = " << (c * 2.0) << std::endl;
 }
 
@@ -107,18 +109,7 @@ void test_hexbutton() {
     }
 }
 
-void test_printChildren() {
-    std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>("Root");
-    rootNode->addChild(std::make_shared<Hex::UI::UINode>("Child0"));
-    rootNode->addChild(std::make_shared<Hex::UI::UINode>("Child1"));
-    rootNode->getChildren().at(0)->addChild(std::make_shared<Hex::UI::UINode>("GrandChild"));
-
-    rootNode->printChildren();
-}
-
-int main() {
-    std::cout << "Hello, World!" << std::endl;
-
+void test_hexGrid() {
     std::shared_ptr<Hex::UI::HexGrid> rootNode = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
 
     Hex::Game game{{11,11}};
@@ -142,6 +133,19 @@ int main() {
         rootNode->draw();
         windowPtr->next_frame();
     }
-    
+}
+
+void test_printChildren() {
+    std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>("Root");
+    rootNode->addChild(std::make_shared<Hex::UI::UINode>("Child0"));
+    rootNode->addChild(std::make_shared<Hex::UI::UINode>("Child1"));
+    rootNode->getChildren().at(0)->addChild(std::make_shared<Hex::UI::UINode>("GrandChild"));
+
+    rootNode->printChildren();
+}
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+
     return 0;
 }
