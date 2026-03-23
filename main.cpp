@@ -132,8 +132,11 @@ void test_hexGrid() {
     }
 
     while (!windowPtr->should_close()) {
+        Hex::vec2<int> screenSize = {windowPtr->width(), windowPtr->height()};
+
         rootNode->update();
-        drawBoundingBoxes(rootNode, windowPtr);
+        rootNode->position = screenSize / 2 - rootNode->getBoundingBox().getCenter();
+        // drawBoundingBoxes(rootNode, windowPtr);
         rootNode->draw();
         windowPtr->next_frame();
     }
