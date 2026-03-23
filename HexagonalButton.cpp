@@ -43,14 +43,16 @@ void Hex::HexagonalButton::update() {
 
 void Hex::HexagonalButton::draw() {
     // Draw top quad
+    vec2<int> globalPos = getGlobalPosition();
+
     windowPtr->draw_quad(
-        vertices.at(0) + position, vertices.at(1) + position, vertices.at(2) + position, vertices.at(3) + position,
+        vertices.at(0) + globalPos, vertices.at(1) + globalPos, vertices.at(2) + globalPos, vertices.at(3) + globalPos,
         color
     );
 
     // Draw bottom quad
     windowPtr->draw_quad(
-        vertices.at(3) + position, vertices.at(4) + position, vertices.at(5) + position, vertices.at(0) + position,
+        vertices.at(3) + globalPos, vertices.at(4) + globalPos, vertices.at(5) + globalPos, vertices.at(0) + globalPos,
         color
     );
 
@@ -76,7 +78,8 @@ Hex::ButtonVisualState Hex::HexagonalButton::getTileState() const {
 bool Hex::HexagonalButton::getButtonIsSelected() const {
     vec2<double> mousePos = windowPtr->get_mouse_coordinates();
 
-    double mouseDistanceSquared = pow(mousePos.x - position.x, 2) + pow(mousePos.y - position.y, 2);
+    vec2<int> globalPos = getGlobalPosition();
+    double mouseDistanceSquared = pow(mousePos.x - globalPos.x, 2) + pow(mousePos.y - globalPos.y, 2);
 
     // std::cout << "mouse: " << mousePos << "tile: " << position << "\n";
     // std::cout << "dist:" << sqrt(mouseDistanceSquared) << "\n";
