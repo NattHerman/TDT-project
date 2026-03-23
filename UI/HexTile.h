@@ -5,7 +5,7 @@
 namespace Hex {
 namespace UI {
 
-class HexGrid; // forward declaration — just tells the compiler it exists (Claude fix circular import)
+class HexGrid; // forward declaration (Claude fix, circular import)
 
 class HexTile : public UINode {
 protected:
@@ -13,6 +13,10 @@ protected:
     int radius = 25;
 
     void setPosition(vec2<int> newPosition) { position = newPosition; }
+
+    void updateBoundingBox() override {
+        boundingBox = Hex::rect<int>{{-radius, -radius}, {radius*2, radius*2}};
+    }
 
 public:
     vec2<int> getTile() const { return tile; }
