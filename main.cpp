@@ -8,6 +8,8 @@
 #include "UI/UINode.h"
 #include "UI/HexGrid.h"
 
+void drawBoundingBoxes(std::shared_ptr<Hex::UI::UINode> node, std::shared_ptr<TDT4102::AnimationWindow> windowPtr);
+
 void test_vec2_operators() {
     Hex::vec2<int> a{1, 2};
     Hex::vec2<int> b{2, -2};
@@ -110,11 +112,12 @@ void test_hexbutton() {
 }
 
 void test_hexGrid() {
-    std::shared_ptr<Hex::UI::HexGrid> rootNode = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
-
     Hex::Game game{{11,11}};
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
     windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
+
+    std::shared_ptr<Hex::UI::HexGrid> rootNode = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
+    rootNode->position.y = windowPtr->height() / 2;
 
     Hex::vec2<int> boardSize = game.getBoard()->getSize();
     for (int x = 0; x < boardSize.x; ++x) {
@@ -130,6 +133,7 @@ void test_hexGrid() {
 
     while (!windowPtr->should_close()) {
         rootNode->update();
+        drawBoundingBoxes(rootNode, windowPtr);
         rootNode->draw();
         windowPtr->next_frame();
     }
@@ -153,8 +157,19 @@ void test_engulf() {
     std::cout << rectA << std::endl;
 }
 
+void drawBoundingBoxes(std::shared_ptr<Hex::UI::UINode> node, std::shared_ptr<TDT4102::AnimationWindow> windowPtr) {
+    Hex::rect<int> box = node->getBoundingBox();
+    windowPtr->draw_rectangle(box.position + node->getGlobalPosition(), box.size.x, box.size.y, TDT4102::Color::transparent, TDT4102::Color::light_pink);
+
+    for (std::shared_ptr<Hex::UI::UINode> &child : node->getChildren()) {
+        drawBoundingBoxes(child, windowPtr);
+    }
+}
+
 int main() {
     std::cout << "Hello, World!" << std::endl;
+
+    test_hexGrid();
 
     return 0;
 }
