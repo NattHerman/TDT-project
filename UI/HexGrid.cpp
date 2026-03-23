@@ -25,6 +25,7 @@ void Hex::UI::HexGrid::alignChildrenPositions() {
 void Hex::UI::HexGrid::addChild(const std::shared_ptr<HexTile> &child) {
     // Cast to std::shared_ptr<UINode>
     children.emplace_back(child);
+    child->parent = shared_from_this();
 }
 
 void Hex::UI::HexGrid::update() {
