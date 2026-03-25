@@ -112,9 +112,10 @@ void test_hexbutton() {
 }
 
 void test_hexGrid() {
-    Hex::Game game{{11,11}};
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
     windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
+
+    Hex::Game game{{11,11}, windowPtr};
 
     std::shared_ptr<Hex::UI::HexGrid> rootNode = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
     rootNode->position.y = windowPtr->height() / 2;
