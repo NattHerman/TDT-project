@@ -56,11 +56,11 @@ bool Hex::Game::takeTurn(const vec2<int> &move) {
         turnCounter++;
         // state = searchForWin();
 
-        // Play stone-placing sfx
-        if (audioManager) {
-            std::filesystem::path stoneAudioPath{"audiodata/stone"};
-            audioManager.playSound(Hex::pickRandomAudio(stoneAudioPath));
-        }
+        // Play stone-placing sfx // REMEMBER TO LOAD BEFORE DOING STUFF
+        // if (audioManager) {
+        //     std::filesystem::path stoneAudioPath{"audiodata/stone"};
+        //     audioManager.playSound(Hex::pickRandomAudio(stoneAudioPath));
+        // }
     }
 
 
