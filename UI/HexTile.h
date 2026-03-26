@@ -11,7 +11,7 @@ class HexTile : public UINode {
 protected:
     vec2<int> tile;
     int radius = 25;
-    int longness = 0;
+    int longness;
 
     TDT4102::Color color = TDT4102::Color::black;
 
@@ -25,17 +25,19 @@ protected:
         boundingBox = Hex::rect<int>{{-radius, -radius}, {radius*2 + longness, radius*2}};
     }
 
+    void drawHexagon();
+
 public:
     vec2<int> getTile() const { return tile; }
     int getRadius() const { return radius; }
 
     void draw() override;
 
-    HexTile(vec2<int> tile, std::shared_ptr<TDT4102::AnimationWindow> windowPtr): tile{tile}, windowPtr{windowPtr} {
+    HexTile(vec2<int> tile, std::shared_ptr<TDT4102::AnimationWindow> windowPtr, int longness = 0): tile{tile}, windowPtr{windowPtr}, longness{longness} {
         vertices.reserve(6); // 6 vertices in a hexagon
         updateVertices();
     }
-    HexTile(vec2<int> tile, std::string name, std::shared_ptr<TDT4102::AnimationWindow> windowPtr): UINode{name}, tile{tile}, windowPtr{windowPtr} {
+    HexTile(vec2<int> tile, std::string name, std::shared_ptr<TDT4102::AnimationWindow> windowPtr, int longness = 0): UINode{name}, tile{tile}, windowPtr{windowPtr}, longness{longness} {
         vertices.reserve(6); // 6 vertices in a hexagon
         updateVertices();
     }

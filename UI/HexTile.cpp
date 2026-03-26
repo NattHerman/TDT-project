@@ -26,10 +26,10 @@ void Hex::UI::HexTile::updateVertices() {
 }
 
 
-void Hex::UI::HexTile::draw() {
-    // Draw top quad
+void Hex::UI::HexTile::drawHexagon() {
     vec2<int> globalPos = getGlobalPosition();
 
+    // Draw top quad
     windowPtr->draw_quad(
         vertices.at(0) + globalPos, vertices.at(1) + globalPos, vertices.at(2) + globalPos, vertices.at(3) + globalPos,
         color
@@ -40,6 +40,9 @@ void Hex::UI::HexTile::draw() {
         vertices.at(3) + globalPos, vertices.at(4) + globalPos, vertices.at(5) + globalPos, vertices.at(0) + globalPos,
         color
     );
+}
 
+void Hex::UI::HexTile::draw() {
+    drawHexagon();
     drawChildren();
 }
