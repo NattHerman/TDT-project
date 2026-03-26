@@ -7,6 +7,7 @@
 #include "HexagonalButton.h"
 #include "UI/UINode.h"
 #include "UI/HexGrid.h"
+#include "UI/Label.h"
 
 void drawBoundingBoxes(std::shared_ptr<Hex::UI::UINode> node, std::shared_ptr<TDT4102::AnimationWindow> windowPtr);
 
@@ -173,7 +174,34 @@ void drawBoundingBoxes(std::shared_ptr<Hex::UI::UINode> node, std::shared_ptr<TD
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
-    test_hexGrid();
+    std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
+    windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
+
+    Hex::Game game{{11,11}, windowPtr};
+
+    std::shared_ptr<Hex::UI::HexGrid> rootNode = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
+    rootNode->position.y = windowPtr->height() / 2;
+
+    Hex::UI::Label label{"Player 1", 75, windowPtr};
+
+    rootNode->addChild(std::make_shared<Hex::UI::Label>(label));
+
+    while (!windowPtr->should_close()) {
+        Hex::vec2<int> screenSize = {windowPtr->width(), windowPtr->height()};
+
+        rootNode->update();
+        rootNode->position = screenSize / 2 - rootNode->getBoundingBox().getCenter();
+        // drawBoundingBoxes(rootNode, windowPtr);
+        rootNode->draw();
+
+        int height = 30;
+        windowPtr->draw_rectangle({0, 10}, 10, height, TDT4102::Color::dark_green);
+        windowPtr->draw_rectangle({5, 0}, 10, 10, TDT4102::Color::green);
+        windowPtr->draw_text({0, 0}, "Test text Test text Test text", TDT4102::Color::black, height + height/3);
+
+        windowPtr->next_frame();
+    }
+
 
     return 0;
 }
