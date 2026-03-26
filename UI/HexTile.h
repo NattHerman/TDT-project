@@ -11,6 +11,7 @@ class HexTile : public UINode {
 protected:
     vec2<int> tile;
     int radius = 25;
+    int longness = 0;
 
     TDT4102::Color color = TDT4102::Color::black;
 
@@ -21,13 +22,13 @@ protected:
     void setPosition(vec2<int> newPosition) { position = newPosition; }
 
     void updateBoundingBox() override {
-        boundingBox = Hex::rect<int>{{-radius, -radius}, {radius*2, radius*2}};
+        boundingBox = Hex::rect<int>{{-radius, -radius}, {radius*2 + longness, radius*2}};
     }
 
 public:
     vec2<int> getTile() const { return tile; }
     int getRadius() const { return radius; }
-    
+
     void draw() override;
 
     HexTile(vec2<int> tile, std::shared_ptr<TDT4102::AnimationWindow> windowPtr): tile{tile}, windowPtr{windowPtr} {

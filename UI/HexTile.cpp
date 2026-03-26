@@ -8,8 +8,10 @@ void Hex::UI::HexTile::updateVertices() {
     constexpr double angleIncrement = 2.0*M_PI / float(vertexCount);
     double angle = 0.0;
     for (int i = 0; i < vertexCount; ++i) {
+        double isRightHalf = std::cos(angle) > 0;
+
         vec2<int> vertex{
-            radius * std::cos(angle),
+            radius * std::cos(angle) + (isRightHalf ? longness : 0),
             radius * std::sin(angle)
         };
 
