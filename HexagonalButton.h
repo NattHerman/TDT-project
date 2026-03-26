@@ -23,17 +23,10 @@ inline std::unordered_map<ButtonVisualState, TDT4102::Color> buttonVisualStateTo
 };
 
 class HexagonalButton : public UI::HexTile {
-    std::vector<vec2<int>> vertices;
-
-    // Variables that change when updated
     ButtonVisualState visualState = ButtonVisualState::Default;
-    TDT4102::Color color = TDT4102::Color::black;
 
-    // Pointers to objects required for drawing
-    std::shared_ptr<TDT4102::AnimationWindow> windowPtr;
     std::shared_ptr<Board> boardPtr;
 
-    void updateVertices();
     bool getButtonIsSelected() const; // True when cursor is hovering over button.
     ButtonVisualState getTileState() const;
 
@@ -43,23 +36,17 @@ class HexagonalButton : public UI::HexTile {
 
 public:
     void update() override;
-    void draw() override;
 
     void setCallback(std::function<void(vec2<int>)> callBack);
     vec2<int> getTile() const { return tile; };
     int getRadius() const { return radius; };
 
-    // Constructor (move this to .cpp? Only 2 lines.)
     HexagonalButton(
         const vec2<int> &tile,
         const std::shared_ptr<TDT4102::AnimationWindow> &windowPtr,
         const std::shared_ptr<Board> &boardPtr
-    ):  HexTile{tile, "HexButton{" + std::to_string(tile.x) + ", " + std::to_string(tile.y) + "}"},
-        windowPtr{windowPtr}, boardPtr{boardPtr}
-    {
-        vertices.reserve(6); // 6 vertices in a hexagon
-        updateVertices();
-    };
+    ):  HexTile{tile, "HexButton{" + std::to_string(tile.x) + ", " + std::to_string(tile.y) + "}", windowPtr},
+        boardPtr{boardPtr} {};
 };
 
 } // namespace Hex
