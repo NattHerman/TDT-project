@@ -24,7 +24,7 @@ int Hex::rand(int from, int to) {
 
 TDT4102::Audio Hex::pickRandomAudio(std::filesystem::path directory) {
     if (!std::filesystem::exists(directory)) {
-        throw std::runtime_error("Directory '" + std::string(directory) + "' does not exist.");
+        throw std::runtime_error("Directory '" + directory.string() + "' does not exist.");
     }
 
     std::vector<std::filesystem::path> audioFiles;
