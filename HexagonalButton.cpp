@@ -27,9 +27,9 @@ void Hex::HexagonalButton::update() {
 Hex::ButtonVisualState Hex::HexagonalButton::getTileState() const {
     TileType boardTileType = boardPtr->getTile(tile);
 
-    if (boardTileType == TileType::StonePlayerOne) {
+    if (boardTileType == TileType::StonePlayerOne || boardTileType == TileType::EdgePlayerOne) {
         return ButtonVisualState::Player1;
-    } if (boardTileType == TileType::StonePlayerTwo) {
+    } if (boardTileType == TileType::StonePlayerTwo || boardTileType == TileType::EdgePlayerTwo) {
         return ButtonVisualState::Player2;
     }
 

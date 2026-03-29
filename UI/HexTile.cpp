@@ -11,7 +11,7 @@ void Hex::UI::HexTile::updateVertices() {
         double isRightHalf = std::cos(angle) > 0;
 
         vec2<int> vertex{
-            radius * std::cos(angle) + (isRightHalf ? longness : 0),
+            radius * std::cos(angle) + (isRightHalf ? longness/2.0 : -longness/2.0),
             radius * std::sin(angle)
         };
 
@@ -40,6 +40,8 @@ void Hex::UI::HexTile::drawHexagon() {
         vertices.at(3) + globalPos, vertices.at(4) + globalPos, vertices.at(5) + globalPos, vertices.at(0) + globalPos,
         color
     );
+
+    windowPtr->draw_circle(globalPos, 10, TDT4102::Color::antique_white);
 }
 
 void Hex::UI::HexTile::draw() {

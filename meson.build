@@ -28,6 +28,7 @@ exe = executable(
 'UI/HexGrid.cpp',
 'UI/HexTile.cpp',
 'UI/Label.cpp',
+'UI/TurnIndicator.cpp',
 'main.cpp',
   dependencies : [std_lib_facilities_dep, animationwindow_dep],
   cpp_args : compiler_flags,

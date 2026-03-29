@@ -8,6 +8,7 @@
 #include "UI/UINode.h"
 #include "UI/HexGrid.h"
 #include "UI/Label.h"
+#include "UI/TurnIndicator.h"
 
 void drawBoundingBoxes(std::shared_ptr<Hex::UI::UINode> node, std::shared_ptr<TDT4102::AnimationWindow> windowPtr);
 
@@ -112,25 +113,56 @@ void test_hexbutton() {
     }
 }
 
+std::shared_ptr<Hex::HexagonalButton> createButton(
+    Hex::vec2<int> tile,
+    const std::shared_ptr<TDT4102::AnimationWindow> &windowPtr,
+    const std::shared_ptr<Hex::Board> &boardPtr,
+    std::shared_ptr<Hex::Game> gamePtr
+) {
+    std::shared_ptr<Hex::HexagonalButton> button = std::make_shared<Hex::HexagonalButton>(tile, windowPtr, gamePtr->getBoard());
+    std::function<void(Hex::vec2<int>)> func = std::bind(&Hex::Game::takeTurn, gamePtr, button->getTile());
+    button->setCallback(func);
+
+    return button;
+}
+
 void test_hexGrid() {
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
     windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
 
-    Hex::Game game{{11,11}, windowPtr};
+    std::shared_ptr<Hex::Game> game = std::make_shared<Hex::Game>(Hex::vec2<int>{11,11}, windowPtr);
 
-    std::shared_ptr<Hex::UI::HexGrid> rootNode = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
-    rootNode->position.y = windowPtr->height() / 2;
+    std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>(std::string("root"));
 
-    Hex::vec2<int> boardSize = game.getBoard()->getSize();
+    std::shared_ptr<Hex::UI::HexGrid> grid = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
+    grid->position.y = windowPtr->height() / 2;
+    rootNode->addChild(grid);
+
+    std::shared_ptr<Hex::UI::TurnIndicator> turnIndicator = Hex::UI::TurnIndicator::create(game, windowPtr);
+    rootNode->addChild(turnIndicator);
+
+    Hex::vec2<int> boardSize = game->getBoard()->getSize();
     for (int x = 0; x < boardSize.x; ++x) {
         for (int y = 0; y < boardSize.y; ++y) {
-            // Initialize button
-            std::shared_ptr<Hex::HexagonalButton> button = std::make_shared<Hex::HexagonalButton>(Hex::vec2<int>{x, y}, windowPtr, game.getBoard());
-            std::function<void(Hex::vec2<int>)> func = std::bind(&Hex::Game::takeTurn, &game, button->getTile());
-            button->setCallback(func);
-
-            rootNode->addChild(button);
+            grid->addChild(createButton({x, y}, windowPtr, game->getBoard(), game));
         }
+    }
+
+    // Create home player home rows
+    for (int y = 0; y < boardSize.y; ++y) {
+        grid->addChild(createButton({-1, y}, windowPtr, game->getBoard(), game));
+    }
+
+    for (int y = 0; y < boardSize.y; ++y) {
+        grid->addChild(createButton({boardSize.x, y}, windowPtr, game->getBoard(), game));
+    }
+
+    for (int x = 0; x < boardSize.x; ++x) {
+        grid->addChild(createButton({x, -1}, windowPtr, game->getBoard(), game));
+    }
+
+    for (int x = 0; x < boardSize.x; ++x) {
+        grid->addChild(createButton({x, boardSize.y}, windowPtr, game->getBoard(), game));
     }
 
     while (!windowPtr->should_close()) {
@@ -174,34 +206,35 @@ void drawBoundingBoxes(std::shared_ptr<Hex::UI::UINode> node, std::shared_ptr<TD
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
-    std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
-    windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
+    // std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
+    // windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
 
-    Hex::Game game{{11,11}, windowPtr};
+    // Hex::Game game{{11,11}, windowPtr};
 
-    std::shared_ptr<Hex::UI::HexGrid> rootNode = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
-    rootNode->position.y = windowPtr->height() / 2;
+    // std::shared_ptr<Hex::UI::HexGrid> rootNode = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
+    // rootNode->position.y = windowPtr->height() / 2;
 
-    Hex::UI::Label label{"Player 1", 75, windowPtr};
+    // Hex::UI::Label label{"Player 1", 75, windowPtr};
 
-    rootNode->addChild(std::make_shared<Hex::UI::Label>(label));
+    // rootNode->addChild(std::make_shared<Hex::UI::Label>(label));
 
-    while (!windowPtr->should_close()) {
-        Hex::vec2<int> screenSize = {windowPtr->width(), windowPtr->height()};
+    // while (!windowPtr->should_close()) {
+    //     Hex::vec2<int> screenSize = {windowPtr->width(), windowPtr->height()};
 
-        rootNode->update();
-        rootNode->position = screenSize / 2 - rootNode->getBoundingBox().getCenter();
-        // drawBoundingBoxes(rootNode, windowPtr);
-        rootNode->draw();
+    //     rootNode->update();
+    //     rootNode->position = screenSize / 2 - rootNode->getBoundingBox().getCenter();
+    //     // drawBoundingBoxes(rootNode, windowPtr);
+    //     rootNode->draw();
 
-        int height = 30;
-        windowPtr->draw_rectangle({0, 10}, 10, height, TDT4102::Color::dark_green);
-        windowPtr->draw_rectangle({5, 0}, 10, 10, TDT4102::Color::green);
-        windowPtr->draw_text({0, 0}, "Test text Test text Test text", TDT4102::Color::black, height + height/3);
+    //     int height = 30;
+    //     windowPtr->draw_rectangle({0, 10}, 10, height, TDT4102::Color::dark_green);
+    //     windowPtr->draw_rectangle({5, 0}, 10, 10, TDT4102::Color::green);
+    //     windowPtr->draw_text({0, 0}, "Test text Test text Test text", TDT4102::Color::black, height + height/3);
 
-        windowPtr->next_frame();
-    }
+    //     windowPtr->next_frame();
+    // }
 
+    test_hexGrid();
 
     return 0;
 }
