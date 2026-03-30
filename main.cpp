@@ -149,19 +149,19 @@ void test_hexGrid() {
     }
 
     // Create home player home rows
-    for (int y = 0; y < boardSize.y; ++y) {
+    for (int y = 1; y < boardSize.y; ++y) {
         grid->addChild(createButton({-1, y}, windowPtr, game->getBoard(), game));
     }
 
-    for (int y = 0; y < boardSize.y; ++y) {
+    for (int y = 0; y < boardSize.y - 1; ++y) {
         grid->addChild(createButton({boardSize.x, y}, windowPtr, game->getBoard(), game));
     }
 
-    for (int x = 0; x < boardSize.x; ++x) {
+    for (int x = 1; x < boardSize.x; ++x) {
         grid->addChild(createButton({x, -1}, windowPtr, game->getBoard(), game));
     }
 
-    for (int x = 0; x < boardSize.x; ++x) {
+    for (int x = 0; x < boardSize.x - 1; ++x) {
         grid->addChild(createButton({x, boardSize.y}, windowPtr, game->getBoard(), game));
     }
 
