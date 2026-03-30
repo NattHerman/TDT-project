@@ -46,6 +46,8 @@ public:
     vec2<int> getSize() const { return size; };
     std::vector<std::vector<TileType>> getBoard() const { return board; };
 
+    std::vector<vec2<int>> getNeighbouringOfType(vec2<int> tile, TileType type);
+
     bool playerOnePlace(const vec2<int> &tile);
     bool playerTwoPlace(const vec2<int> &tile);
 

@@ -100,3 +100,31 @@ Hex::Board::Board(const vec2<int> &size): size{size} {
     stonesPlayerOne.reserve(maxPossibleMoves);
     stonesPlayerTwo.reserve(maxPossibleMoves);
 }
+
+std::vector<Hex::vec2<int>> Hex::Board::getNeighbouringOfType(Hex::vec2<int> tile, Hex::TileType targetType) {
+    static const std::vector<Hex::vec2<int>> relativeTiles = {
+        { 1,  0},
+        {-1,  0},
+        { 1, -1},
+        { 0,  1},
+        { 0, -1},
+        {-1,  1},
+    };
+
+    std::vector<Hex::vec2<int>> tiles;
+    tiles.reserve(6);
+
+    TileType edgeType = TileType::EdgePlayerOne;
+    if (targetType == TileType::StonePlayerTwo) {
+        edgeType = TileType::EdgePlayerTwo;
+    } 
+
+    for (Hex::vec2<int> relativeTile : relativeTiles) {
+        Hex::TileType type = getTile(tile + relativeTile);
+        if (type == targetType || type == edgeType) {
+            tiles.emplace_back(tile + relativeTile);
+        }
+    }
+
+    return tiles;
+}

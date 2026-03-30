@@ -52,6 +52,12 @@ bool Hex::Game::takeTurn(const vec2<int> &move) {
         moveSuccess = board->playerTwoPlace(move);
     }
 
+    // DEBUG RETURNED NEIGHBOURS
+    // std::cout << "Move: " << move << std::endl;
+    // for (vec2<int> tile : board->getNeighbouringOfType(move, getTurn() == Turn::Player1 ? TileType::StonePlayerOne : TileType::StonePlayerTwo)) {
+    //     std::cout << "returned: " << tile << std::endl;
+    // }
+
     if (moveSuccess) {
         turnCounter++;
         // state = searchForWin();
