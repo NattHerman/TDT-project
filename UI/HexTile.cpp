@@ -41,7 +41,7 @@ void Hex::UI::HexTile::drawHexagon() {
         color
     );
 
-    windowPtr->draw_circle(globalPos, 10, TDT4102::Color::antique_white);
+    // windowPtr->draw_circle(globalPos, 10, TDT4102::Color::antique_white);
 }
 
 void Hex::UI::HexTile::draw() {
