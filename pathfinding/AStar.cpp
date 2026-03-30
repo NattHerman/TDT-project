@@ -1,13 +1,15 @@
 #include "AStar.h"
 
+namespace Hex {
+namespace Path {
 
-int Hex::Path::AStar::getLowestCostIndex() {
+int AStar::getLowestCostIndex() {
     int lowestCostIndex = 0;
-    std::shared_ptr<Hex::Path::Node> lowestCostNode = open.at(lowestCostIndex);
+    std::shared_ptr<Node> lowestCostNode = open.at(lowestCostIndex);
     double lowestCost = lowestCostNode->getCost();
 
     for (int i = 0; i < open.size(); ++i) {
-        std::shared_ptr<Hex::Path::Node> node = open.at(i);
+        std::shared_ptr<Node> node = open.at(i);
         if (node->getCost() < lowestCost) {
             lowestCostNode = node;
             lowestCostIndex = i;
@@ -17,7 +19,7 @@ int Hex::Path::AStar::getLowestCostIndex() {
     return lowestCostIndex;
 }
 
-void Hex::Path::AStar::closeNode(int nodeToBeClosedIndex) {
+void AStar::closeNode(int nodeToBeClosedIndex) {
     // Close node
     closed.insert({open.at(nodeToBeClosedIndex), true});
 
@@ -28,7 +30,7 @@ void Hex::Path::AStar::closeNode(int nodeToBeClosedIndex) {
     open.pop_back();
 }
 
-void Hex::Path::AStar::updateOpenNodes(std::shared_ptr<Node> currentNode) {
+void AStar::updateOpenNodes(std::shared_ptr<Node> currentNode) {
     std::vector<std::shared_ptr<Node>> neighbours = currentNode->getNeighbours();
 
     for (std::shared_ptr<Node> neighbour : neighbours) {
@@ -42,16 +44,21 @@ void Hex::Path::AStar::updateOpenNodes(std::shared_ptr<Node> currentNode) {
             }
         }
 
-        if (!openContainsCurrent) {
-            open.emplace_back(neighbour);
+        double oldPath = neighbour->pathCost;
+        double newPath = currentNode->pathCost + currentNode->distance(neighbour);
+        bool newPathToNeighbourIsShorter = newPath < oldPath;
+
+        if (!openContainsCurrent || newPathToNeighbourIsShorter) {
+            neighbour->heuristicCost = neighbour->distance(targetNode);
+            neighbour->pathCost = newPath;
+            if (!openContainsCurrent) {
+                open.emplace_back(neighbour);
+            }
         }
     }
 }
 
-std::vector<std::shared_ptr<Hex::Path::Node>> Hex::Path::AStar::findPath(std::shared_ptr<Hex::Path::Node> startNode, std::shared_ptr<Hex::Path::Node> targetNode) {
-    std::vector<std::shared_ptr<Node>> open;
-    std::unordered_map<std::shared_ptr<Node>, bool> closed;
-
+std::vector<std::shared_ptr<Node>> AStar::findPath() {
     std::shared_ptr<Node> current = startNode;
     open.push_back(current);
 
@@ -67,4 +74,12 @@ std::vector<std::shared_ptr<Hex::Path::Node>> Hex::Path::AStar::findPath(std::sh
 
         updateOpenNodes(current);
     }
+
+    if (!foundPath) { return {}; }
+
+    // create path from targetNode
+    return {}; // 
 }
+
+} // namespace Path
+} // namespace Hex
