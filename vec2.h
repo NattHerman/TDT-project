@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+
 #include "Point.h"
 
 namespace Hex {
@@ -20,6 +21,14 @@ struct vec2 {
     template <typename U>
     explicit operator vec2<U>() const {
         return vec2<U>{static_cast<U>(x), static_cast<U>(y)};
+    }
+
+    double length_squared() {
+        return x*x + y*y;
+    }
+
+    double length() {
+        return sqrt(length_squared());
     }
 
     // Constructors
