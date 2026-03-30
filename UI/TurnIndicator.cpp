@@ -6,7 +6,7 @@ void Hex::UI::TurnIndicator::update() {
     position.x = halfWindowWidth;
     position.y = 50; // Just below the top of the screen. magic number, sorry
 
-    windowPtr->draw_circle(position, 20);
+    // windowPtr->draw_circle(position, 20);
 
     // getChild(0)->position.x = halfWindowWidth/2;
     // getChild(1)->position.x = -halfWindowWidth/2;
