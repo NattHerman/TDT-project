@@ -59,16 +59,47 @@ bool Hex::Game::takeTurn(const vec2<int> &move) {
     // }
 
     if (moveSuccess) {
-        turnCounter++;
-        // state = searchForWin();
+        state = searchForWin();
+        std::cout << (state == GameState::Ongoing ? "ongoing" : "finished") << std::endl;
 
         // Play stone-placing sfx // REMEMBER TO LOAD BEFORE DOING STUFF
         // if (audioManager) {
         //     std::filesystem::path stoneAudioPath{"audiodata/stone"};
         //     audioManager.playSound(Hex::pickRandomAudio(stoneAudioPath));
         // }
+        turnCounter++;
     }
 
 
     return moveSuccess;
+}
+
+Hex::GameState Hex::Game::searchForWin() {
+    vec2<int> startTile;
+    vec2<int> endTile;
+
+    switch (getTurn()) {
+    case Turn::Player2:
+        startTile = {1, -1};
+        endTile = {0, board->getSize().y};
+        break;
+    case Turn::Player1:
+        startTile = {-1, 1};
+        endTile = {board->getSize().x, 0};
+        break;
+    }
+
+    std::shared_ptr<Path::BoardNodeGenerator> boardNodeGenerator = std::make_shared<Path::BoardNodeGenerator>(getBoard(), getTurn() == Turn::Player1 ? TileType::StonePlayerOne : TileType::StonePlayerTwo);
+
+    std::shared_ptr<Path::BoardNode> startNode = boardNodeGenerator->getNode(startTile);
+    std::shared_ptr<Path::BoardNode> endNode = boardNodeGenerator->getNode(endTile);
+
+    Path::AStar pathfinder{startNode, endNode};
+    std::vector<std::shared_ptr<Path::Node>> path = pathfinder.findPath(audioManager.getWindowPtr());
+
+    if (path.size() > 0) {
+        return getTurn() == Turn::Player1 ? GameState::Player1Won : GameState::Player2Won;
+    }
+
+    return GameState::Ongoing;
 }

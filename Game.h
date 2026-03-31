@@ -2,6 +2,7 @@
 
 #include "Board.h"
 #include "AudioManager.h"
+#include "pathfinding/BoardNode.h"
 
 namespace Hex {
 
@@ -21,7 +22,7 @@ class Game {
     GameState state = GameState::Ongoing;
     std::shared_ptr<Board> board;
 
-    Hex::AudioManager audioManager;
+    AudioManager audioManager;
 
     GameState searchForWin(); // Look for a path of stones going from one side to the other.
 
@@ -31,8 +32,10 @@ public:
     GameState getState() const { return state; };
     bool takeTurn(const vec2<int> &move);
 
-    Game(const vec2<int> &boardSize): board{std::make_shared<Board>(boardSize)} {};
-    Game(const vec2<int> &boardSize, std::shared_ptr<TDT4102::AnimationWindow> windowPtr): board{std::make_shared<Board>(boardSize)}, audioManager{windowPtr} {};
+    Game(const vec2<int> &boardSize)
+    : board{std::make_shared<Board>(boardSize)} {};
+    Game(const vec2<int> &boardSize, std::shared_ptr<TDT4102::AnimationWindow> windowPtr)
+    : board{std::make_shared<Board>(boardSize)}, audioManager{windowPtr} {};
 };
 
 // Helper functions
