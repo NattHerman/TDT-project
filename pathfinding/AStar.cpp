@@ -1,4 +1,8 @@
+#include <iostream>
+#include <cmath>
+
 #include "AStar.h"
+#include "BoardNode.h"
 
 namespace Hex {
 namespace Path {
@@ -51,6 +55,7 @@ void AStar::updateOpenNodes(std::shared_ptr<Node> currentNode) {
         if (!openContainsCurrent || newPathToNeighbourIsShorter) {
             neighbour->heuristicCost = neighbour->distance(targetNode);
             neighbour->pathCost = newPath;
+            neighbour->from = currentNode;
             if (!openContainsCurrent) {
                 open.emplace_back(neighbour);
             }
@@ -58,7 +63,7 @@ void AStar::updateOpenNodes(std::shared_ptr<Node> currentNode) {
     }
 }
 
-std::vector<std::shared_ptr<Node>> AStar::findPath() {
+std::vector<std::shared_ptr<Node>> AStar::findPath(std::shared_ptr<TDT4102::AnimationWindow> winPtr) {
     std::shared_ptr<Node> current = startNode;
     open.push_back(current);
 
@@ -73,12 +78,33 @@ std::vector<std::shared_ptr<Node>> AStar::findPath() {
         if (foundPath) break;
 
         updateOpenNodes(current);
+
+        // Debugging, draw path
+        // static constexpr double angle = 2.0*M_PI / 12.0;
+
+        // static const vec2<double> xDirection{std::cos(angle), std::sin(angle)};
+        // static const vec2<double> yDirection{std::cos(angle), -std::sin(angle)};
+
+        // vec2<int> currentTile = std::static_pointer_cast<BoardNode>(current)->tile;
+        // std::cout << currentTile << std::endl;
+        // vec2<double> alignedPosition = (xDirection * currentTile.x + yDirection * currentTile.y) * 25*2 + vec2<double>{79, 384};
+        // winPtr->draw_circle(alignedPosition, 30, TDT4102::Color::light_pink);
     }
 
     if (!foundPath) { return {}; }
 
-    // create path from targetNode
-    return {}; // 
+    // create path from targetNode to startNode, following trail of froms.
+    std::shared_ptr<Node> pathNode = targetNode;
+    std::vector<std::shared_ptr<Node>> path{pathNode};
+    while (pathNode->from) {
+        pathNode = pathNode->from;
+        path.push_back(pathNode);
+    }
+
+    // Reverse path, so that it goes from start to target.
+    std::reverse(path.begin(), path.end());
+
+    return path;
 }
 
 } // namespace Path

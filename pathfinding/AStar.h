@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "vec2.h"
+#include "AnimationWindow.h"
 
 namespace Hex {
 namespace Path {
@@ -45,7 +46,7 @@ class AStar {
     void updateOpenNodes(std::shared_ptr<Node> currentNode);
 
 public:
-    std::vector<std::shared_ptr<Node>> findPath();
+    std::vector<std::shared_ptr<Node>> findPath(std::shared_ptr<TDT4102::AnimationWindow> winPtr);
 
     AStar(std::shared_ptr<Node> startNode, std::shared_ptr<Node> targetNode): startNode{startNode}, targetNode{targetNode} {}
 };
