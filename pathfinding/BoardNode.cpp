@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 
 #include "BoardNode.h"
 
@@ -6,9 +7,10 @@ namespace Hex {
 namespace Path {
 
 std::shared_ptr<BoardNode> BoardNodeGenerator::getNode(vec2<int> tile) {
-    int nodeIndex = tile.x + tile.y * boardPtr->getSize().x;
+    vec2<int> tileIndex = tile + vec2{1, 1};
+    int nodeIndex = tileIndex.x + tileIndex.y * (boardPtr->getSize().x + 2); // + 2 to account for edges
     if (!nodes.at(nodeIndex)) {
-        nodes.at(nodeIndex) = std::make_shared<BoardNode>(shared_from_this());
+        nodes.at(nodeIndex) = std::make_shared<BoardNode>(shared_from_this(), tile);
     }
 
     return nodes.at(nodeIndex);
@@ -34,8 +36,9 @@ std::vector<std::shared_ptr<Node>> BoardNode::getNeighbours() {
     std::vector<std::shared_ptr<Node>> neigbourNodes;
     neigbourNodes.reserve(6);
 
-    for (vec2<int> tile : neighbourTiles) {
-        neigbourNodes.emplace_back(generator->getNode(tile));
+    for (vec2<int> neighbourTile : neighbourTiles) {
+        std::shared_ptr<BoardNode> neigbourNode = generator->getNode(neighbourTile); 
+        neigbourNodes.emplace_back(neigbourNode);
     }
 
     return neigbourNodes;

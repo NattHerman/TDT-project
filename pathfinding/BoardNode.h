@@ -16,12 +16,13 @@ class BoardNodeGenerator : public std::enable_shared_from_this<BoardNodeGenerato
     Hex::TileType tileType;
 
     std::vector<std::shared_ptr<BoardNode>> nodes;
+    
 public:
     std::shared_ptr<BoardNode> getNode(vec2<int> tile);
 
-    BoardNodeGenerator(std::shared_ptr<Board> boardPtr): boardPtr{boardPtr} {
+    BoardNodeGenerator(std::shared_ptr<Board> boardPtr, Hex::TileType tileType): boardPtr{boardPtr}, tileType{tileType} {
         vec2<int> boardSize = boardPtr->getSize();
-        nodes.resize(boardSize.x * boardSize.y);
+        nodes.resize((boardSize.x + 2) * (boardSize.y + 2));
     }
 
     friend BoardNode;
@@ -36,12 +37,16 @@ protected:
 
     double distance(std::shared_ptr<Node> other) override;
 
-    BoardNode(std::shared_ptr<BoardNodeGenerator> generator, std::shared_ptr<Node> from): Node{from}, boardPtr{generator->boardPtr}, generator{generator} {}
+    BoardNode(std::shared_ptr<BoardNodeGenerator> generator, vec2<int> tile, std::shared_ptr<Node> from)
+    : Node{from}, boardPtr{generator->boardPtr}, generator{generator}, tile{tile} {}
 
 public:
     std::vector<std::shared_ptr<Node>> getNeighbours() override;
 
-    BoardNode(std::shared_ptr<BoardNodeGenerator> generator): boardPtr{generator->boardPtr}, generator{generator} {}
+    BoardNode(std::shared_ptr<BoardNodeGenerator> generator, vec2<int> tile)
+    : boardPtr{generator->boardPtr}, generator{generator}, tile{tile} {}
+    
+    friend AStar;
 };
 
 } // namespace Hex
