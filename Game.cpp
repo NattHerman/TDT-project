@@ -44,6 +44,8 @@ TDT4102::Audio Hex::pickRandomAudio(std::filesystem::path directory) {
 }
 
 bool Hex::Game::takeTurn(const vec2<int> &move) {
+    if (state != GameState::Ongoing) { return false; }
+
     bool moveSuccess = false;
 
     if (getTurn() == Turn::Player1) {
