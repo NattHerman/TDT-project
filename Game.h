@@ -31,6 +31,7 @@ public:
     std::shared_ptr<Board>  getBoard() const { return board; };
     GameState getState() const { return state; };
     bool takeTurn(const vec2<int> &move);
+    void forfeit();
 
     Game(const vec2<int> &boardSize)
     : board{std::make_shared<Board>(boardSize)} {};

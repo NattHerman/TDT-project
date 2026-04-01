@@ -76,6 +76,17 @@ bool Hex::Game::takeTurn(const vec2<int> &move) {
     return moveSuccess;
 }
 
+void Hex::Game::forfeit() {
+    switch (getTurn()) {
+    case Turn::Player1:
+        state = GameState::Player2Won; break;
+    case Turn::Player2:
+        state = GameState::Player1Won; break;
+    default:
+        break;
+    }
+}
+
 Hex::GameState Hex::Game::searchForWin() {
     vec2<int> startTile;
     vec2<int> endTile;
