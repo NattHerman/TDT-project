@@ -8,8 +8,8 @@ void Hex::UI::TurnIndicator::update() {
 
     // windowPtr->draw_circle(position, 20);
 
-    // getChild(0)->position.x = halfWindowWidth/2;
-    // getChild(1)->position.x = -halfWindowWidth/2;
+    getChild(0)->position.x = -halfWindowWidth/2;
+    getChild(1)->position.x = halfWindowWidth/2;
 
     updateChildren();
 }
