@@ -27,6 +27,8 @@ void Hex::UI::HexTile::updateVertices() {
 
 
 void Hex::UI::HexTile::drawHexagon() {
+    if (!visible) return;
+
     vec2<int> globalPos = getGlobalPosition();
 
     // Draw top quad

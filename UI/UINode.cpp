@@ -55,6 +55,8 @@ void Hex::UI::UINode::updateChildren() {
 }
 
 void Hex::UI::UINode::update() {
+    if (!visible) return;
+
     updateChildren();
 }
 
@@ -73,6 +75,8 @@ void Hex::UI::UINode::updateBoundingBox() {
 }
 
 void Hex::UI::UINode::draw() {
+    if (!visible) return;
+
     drawChildren();
 }
 

@@ -1,6 +1,8 @@
 #include "Label.h"
 
 void Hex::UI::Label::draw() {
+    if (!visible) return;
+
     drawHexagon();
 
     // Draw text

@@ -28,6 +28,7 @@ protected:
 
 public:
     vec2<int> position = {0, 0};
+    bool visible = true;
 
     void addChild(const std::shared_ptr<UINode> &child);
     std::shared_ptr<UINode> removeChild(const std::shared_ptr<UINode> &child);
