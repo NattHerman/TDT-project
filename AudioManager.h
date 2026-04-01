@@ -17,6 +17,8 @@ class AudioManager {
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr;
     
 public:
+    std::shared_ptr<TDT4102::AnimationWindow> getWindowPtr() const { return windowPtr; }
+
     void playSound(TDT4102::Audio sound) {
         if (!windowPtr) {
             throw std::runtime_error("Cannot play sound when windowPtr is null.");
