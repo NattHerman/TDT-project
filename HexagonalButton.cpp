@@ -43,12 +43,8 @@ Hex::ButtonVisualState Hex::HexagonalButton::getTileState() const {
 bool Hex::HexagonalButton::getButtonIsSelected() const {
     vec2<double> mousePos = windowPtr->get_mouse_coordinates();
 
-    vec2<int> globalPos = getGlobalPosition();
-    double mouseDistanceSquared = pow(mousePos.x - globalPos.x, 2) + pow(mousePos.y - globalPos.y, 2);
-
-    // std::cout << "mouse: " << mousePos << "tile: " << position << "\n";
-    // std::cout << "dist:" << sqrt(mouseDistanceSquared) << "\n";
-    // std::cout << "is selected: " << (mouseDistanceSquared < radius*radius ? "true" : "false") << std::endl;
+    vec2<double> globalPos = getGlobalPosition();
+    double mouseDistanceSquared = (mousePos - globalPos).length_squared();
 
     return mouseDistanceSquared < radius*radius;
 }
