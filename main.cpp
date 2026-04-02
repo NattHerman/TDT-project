@@ -69,9 +69,11 @@ int main() {
     while (!windowPtr->should_close()) {
         Hex::vec2<int> screenSize = {windowPtr->width(), windowPtr->height()};
 
+        bool gameIsOngoing = game->getState() != Hex::GameState::Ongoing;
+        
         // Make GameOver thing visible when game ends
-        if (game->getState() != Hex::GameState::Ongoing) {
-            gameOverLabel->visible = true;
+        gameOverLabel->visible = gameIsOngoing;
+        if (gameIsOngoing) {
             gameOverLabel->position.x = screenSize.x /2;
         }
 
