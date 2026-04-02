@@ -17,6 +17,7 @@ struct rect {
 
     // Expands to fit self and other rectangle
     void engulf(rect<T> other);
+    bool inside(vec2<T> point);
 
     rect() = default;
     rect(vec2<T> size): size{size} {}
@@ -31,6 +32,14 @@ void rect<T>::engulf(rect<T> other)  {
 
     position = topLeft;
     size = bottomRight - topLeft;
+}
+
+template <typename T>
+bool rect<T>::inside(vec2<T> point) {
+    return (
+        (position.x < point.x && point.x < position.x + size.x) &&
+        (position.y < point.y && point.y < position.y + size.y)
+    )
 }
 
 template <typename T>
