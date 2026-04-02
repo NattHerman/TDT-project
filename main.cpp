@@ -37,31 +37,39 @@ void populateButtonGrid(std::shared_ptr<Hex::UI::HexGrid> grid, std::shared_ptr<
 }
 
 int main() {
+    // Initialize AnimationWindow
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
     windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
 
+    // Initialize Hex Game object
     std::shared_ptr<Hex::Game> game = std::make_shared<Hex::Game>(Hex::vec2<int>{5, 5}, windowPtr);
 
+    // Root Node contains all nodes to be drawn, as children
     std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>(std::string("root"));
 
+    // Grid stores and aligns all hex buttons
     std::shared_ptr<Hex::UI::HexGrid> grid = std::make_shared<Hex::UI::HexGrid>(std::string("Hexagonal Grid"));
     grid->position.y = windowPtr->height() / 2;
     rootNode->addChild(grid);
 
+    // Turn Indicator displays whose turn it is
     std::shared_ptr<Hex::UI::TurnIndicator> turnIndicator = Hex::UI::TurnIndicator::create(game, windowPtr);
     rootNode->addChild(turnIndicator);
 
+    // Game over label appears when game is over (duh)
     std::shared_ptr<Hex::UI::Label> gameOverLabel = std::make_shared<Hex::UI::Label>("Game over", 140, windowPtr);
     gameOverLabel->setColor(TDT4102::Color{0x48814d});
     gameOverLabel->visible = false;
     gameOverLabel->position.y = 75;
     rootNode->addChild(gameOverLabel);
 
+    // Fills the grid with hexagonal buttons
     populateButtonGrid(grid, game, windowPtr);
 
     while (!windowPtr->should_close()) {
         Hex::vec2<int> screenSize = {windowPtr->width(), windowPtr->height()};
 
+        // Make GameOver thing visible when game ends
         if (game->getState() != Hex::GameState::Ongoing) {
             gameOverLabel->visible = true;
             gameOverLabel->position.x = screenSize.x /2;
