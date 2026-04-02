@@ -22,7 +22,7 @@ protected:
     void setPosition(vec2<int> newPosition) { position = newPosition; }
 
     void updateBoundingBox() override {
-        boundingBox = Hex::rect<int>{{-radius, -radius}, {radius*2 + longness, radius*2}};
+        boundingBox = Hex::rect<int>{{-radius - longness/2, -radius}, {radius*2 + longness, radius*2}};
     }
 
     void drawHexagon();
