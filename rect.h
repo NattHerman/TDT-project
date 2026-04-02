@@ -40,7 +40,7 @@ bool rect<T>::inside(vec2<T> point) {
     return (
         (position.x < point.x && point.x < position.x + size.x) &&
         (position.y < point.y && point.y < position.y + size.y)
-    )
+    );
 }
 
 template <typename T>
