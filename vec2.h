@@ -34,6 +34,8 @@ struct vec2 {
     // Constructors
     vec2() = default;
     vec2(T x, T y): x{x}, y{y} {};
+    template<typename U>
+    vec2(vec2<U> other): x{other.x}, y{other.y} {};
     // claude suggestion, construct from TDT4102::Point to vec2<T>
     vec2(const TDT4102::Point &point): x{point.x}, y{point.y} {} 
 };
