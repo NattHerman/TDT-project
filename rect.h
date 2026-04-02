@@ -17,6 +17,7 @@ struct rect {
 
     // Expands to fit self and other rectangle
     void engulf(rect<T> other);
+    // Checks if point is inside rectangle
     bool inside(vec2<T> point);
 
     rect() = default;
