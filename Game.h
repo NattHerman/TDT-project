@@ -32,6 +32,7 @@ public:
     GameState getState() const { return state; };
     bool takeTurn(const vec2<int> &move);
     void forfeit();
+    void newGame();
 
     Game(const vec2<int> &boardSize)
     : board{std::make_shared<Board>(boardSize)} {};

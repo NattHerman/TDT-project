@@ -86,6 +86,14 @@ void Hex::Game::forfeit() {
     }
 }
 
+void Hex::Game::newGame() {
+    vec2<int> boardSize = board->getSize();
+    turnCounter = 1;
+    state = GameState::Ongoing;
+
+    board = std::make_shared<Board>(boardSize);
+}
+
 Hex::GameState Hex::Game::searchForWin() {
     vec2<int> startTile;
     vec2<int> endTile;

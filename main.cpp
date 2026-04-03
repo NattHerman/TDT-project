@@ -1,5 +1,5 @@
 #include "testing.h"
-
+#include "UI/Button.h"
 
 void drawBoundingBoxes(std::shared_ptr<Hex::UI::UINode> node, std::shared_ptr<TDT4102::AnimationWindow> windowPtr) {
     Hex::rect<int> box = node->getBoundingBox();
@@ -36,13 +36,18 @@ void populateButtonGrid(std::shared_ptr<Hex::UI::HexGrid> grid, std::shared_ptr<
     }
 }
 
+void newGame(std::shared_ptr<Hex::UI::HexGrid> grid, std::shared_ptr<Hex::Game> game, std::shared_ptr<TDT4102::AnimationWindow> windowPtr) {
+    game->newGame();
+    populateButtonGrid(grid, game, windowPtr);
+}
+
 int main() {
     // Initialize AnimationWindow
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
     windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
 
     // Initialize Hex Game object
-    std::shared_ptr<Hex::Game> game = std::make_shared<Hex::Game>(Hex::vec2<int>{5, 5}, windowPtr);
+    std::shared_ptr<Hex::Game> game = std::make_shared<Hex::Game>(Hex::vec2<int>{11, 11}, windowPtr);
 
     // Root Node contains all nodes to be drawn, as children
     std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>(std::string("root"));
@@ -58,10 +63,20 @@ int main() {
 
     // Game over label appears when game is over (duh)
     std::shared_ptr<Hex::UI::Label> gameOverLabel = std::make_shared<Hex::UI::Label>("Game over", 140, windowPtr);
-    gameOverLabel->setColor(TDT4102::Color{0x48814d});
+    gameOverLabel->setColor(TDT4102::Color{0x48814d}); // greenish color
     gameOverLabel->visible = false;
     gameOverLabel->position.y = 75;
     rootNode->addChild(gameOverLabel);
+
+    std::shared_ptr<Hex::UI::Button> forfeitButton = std::make_shared<Hex::UI::Button>("Forfeit", 90, windowPtr);
+    forfeitButton->setColor(TDT4102::Color{0x48814d});
+    forfeitButton->setCallback(std::bind(Hex::Game::forfeit, game));
+    rootNode->addChild(forfeitButton);
+
+    std::shared_ptr<Hex::UI::Button> newgameButton = std::make_shared<Hex::UI::Button>("New Game", 140, windowPtr);
+    newgameButton->setColor(TDT4102::Color{0x48814d});
+    newgameButton->setCallback(std::bind(newGame, grid, game, windowPtr));
+    rootNode->addChild(newgameButton);
 
     // Fills the grid with hexagonal buttons
     populateButtonGrid(grid, game, windowPtr);
@@ -69,13 +84,19 @@ int main() {
     while (!windowPtr->should_close()) {
         Hex::vec2<int> screenSize = {windowPtr->width(), windowPtr->height()};
 
-        bool gameIsOngoing = game->getState() != Hex::GameState::Ongoing;
+        bool gameIsOngoing = game->getState() == Hex::GameState::Ongoing;
         
         // Make GameOver thing visible when game ends
-        gameOverLabel->visible = gameIsOngoing;
-        if (gameIsOngoing) {
-            gameOverLabel->position.x = screenSize.x /2;
+        gameOverLabel->visible = !gameIsOngoing;
+        newgameButton->visible = !gameIsOngoing;
+        forfeitButton->visible = gameIsOngoing;
+        if (!gameIsOngoing) {
+            gameOverLabel->position.x = screenSize.x / 2;
         }
+
+        // Align forfeit button
+        forfeitButton->position = {(screenSize.x * 3) / 4, screenSize.y - 75};
+        newgameButton->position = {(screenSize.x * 3) / 4, screenSize.y - 75};
 
         rootNode->update();
         grid->position = screenSize / 2 - grid->getBoundingBox().getCenter();
