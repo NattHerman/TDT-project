@@ -62,7 +62,6 @@ bool Hex::Game::takeTurn(const vec2<int> &move) {
 
     if (moveSuccess) {
         state = searchForWin();
-        std::cout << (state == GameState::Ongoing ? "ongoing" : "finished") << std::endl;
 
         // Play stone-placing sfx // REMEMBER TO LOAD BEFORE DOING STUFF
         // if (audioManager) {
