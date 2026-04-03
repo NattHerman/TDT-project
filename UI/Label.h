@@ -12,6 +12,7 @@ public:
 
     virtual void setColor(TDT4102::Color newColor) { color = newColor; }
 
+    virtual void drawText();
     virtual void draw() override;
 
     Label(std::string text, int longness, std::shared_ptr<TDT4102::AnimationWindow> windowPtr)
