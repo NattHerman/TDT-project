@@ -16,7 +16,7 @@ bool Hex::UI::Button::detectIsSelected() {
     // you know, the longness rectangle, the bit between the ends < > of the hexagon.
     // (or rather an approximation, not 100% accurate but the difference is probably covered by the end circles)
     rect<double> longnessRect{
-        {position.x, position.y - radius},
+        {position.x - longness/2, position.y - radius},
         {longness, 2*radius}
     };
 
