@@ -28,6 +28,7 @@ exe = executable(
 'UI/HexGrid.cpp',
 'UI/HexTile.cpp',
 'UI/Label.cpp',
+'UI/Button.cpp',
 'UI/TurnIndicator.cpp',
 'pathfinding/AStar.cpp',
 'pathfinding/BoardNode.cpp',
