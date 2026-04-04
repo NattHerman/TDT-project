@@ -99,8 +99,10 @@ int main() {
             gameOverLabel->setColor(TDT4102::Color(player1Won ? 0xa86052 : 0x5676b1)); // stupid magic numbers
         }
 
-        // Align forfeit button
-        forfeitButton->position = {(screenSize.x * 3) / 4, screenSize.y - 75};
+        // Align buttons
+        forfeitButton->position = {(screenSize.x * 3) / 4, 100}; // im a wizard, so many magic numbers
+        if (game->getTurn() == Hex::Turn::Player1)
+        { forfeitButton->position.x /= 3; }
         newgameButton->position = {(screenSize.x * 3) / 4, screenSize.y - 75};
 
         rootNode->update();
