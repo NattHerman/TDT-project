@@ -62,7 +62,7 @@ int main() {
     rootNode->addChild(turnIndicator);
 
     // Game over label appears when game is over (duh)
-    std::shared_ptr<Hex::UI::Label> gameOverLabel = std::make_shared<Hex::UI::Label>("Game over", 140, windowPtr);
+    std::shared_ptr<Hex::UI::Label> gameOverLabel = std::make_shared<Hex::UI::Label>("Player x won!", 160, windowPtr);
     gameOverLabel->setColor(TDT4102::Color{0x48814d}); // greenish color
     gameOverLabel->visible = false;
     gameOverLabel->position.y = 75;
@@ -70,11 +70,13 @@ int main() {
 
     std::shared_ptr<Hex::UI::Button> forfeitButton = std::make_shared<Hex::UI::Button>("Forfeit", 90, windowPtr);
     forfeitButton->setColor(TDT4102::Color{0x48814d});
+    forfeitButton->setHighlighColor(TDT4102::Color{0x68a26c});
     forfeitButton->setCallback(std::bind(Hex::Game::forfeit, game));
     rootNode->addChild(forfeitButton);
 
     std::shared_ptr<Hex::UI::Button> newgameButton = std::make_shared<Hex::UI::Button>("New Game", 140, windowPtr);
     newgameButton->setColor(TDT4102::Color{0x48814d});
+    newgameButton->setHighlighColor(TDT4102::Color{0x68a26c});
     newgameButton->setCallback(std::bind(newGame, grid, game, windowPtr));
     rootNode->addChild(newgameButton);
 
@@ -85,6 +87,7 @@ int main() {
         Hex::vec2<int> screenSize = {windowPtr->width(), windowPtr->height()};
 
         bool gameIsOngoing = game->getState() == Hex::GameState::Ongoing;
+        bool player1Won = game->getState() == Hex::GameState::Player1Won;
         
         // Make GameOver thing visible when game ends
         gameOverLabel->visible = !gameIsOngoing;
@@ -92,6 +95,8 @@ int main() {
         forfeitButton->visible = gameIsOngoing;
         if (!gameIsOngoing) {
             gameOverLabel->position.x = screenSize.x / 2;
+            gameOverLabel->text = "Player " + std::string(player1Won ? "1" : "2") + " won!";
+            gameOverLabel->setColor(TDT4102::Color(player1Won ? 0xa86052 : 0x5676b1)); // stupid magic numbers
         }
 
         // Align forfeit button
