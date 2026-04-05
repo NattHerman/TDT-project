@@ -74,7 +74,6 @@ bool Hex::Board::playerOnePlace(const vec2<int> &tile) {
         return false;
     }
 
-    stonesPlayerOne.emplace_back(tile);
     board.at(tile.x).at(tile.y) = TileType::StonePlayerOne;
     return true;
 }
@@ -84,7 +83,6 @@ bool Hex::Board::playerTwoPlace(const vec2<int> &tile) {
         return false;
     }
 
-    stonesPlayerTwo.emplace_back(tile);
     board.at(tile.x).at(tile.y) = TileType::StonePlayerTwo;
     return true;
 }
@@ -97,8 +95,6 @@ Hex::Board::Board(const vec2<int> &size): size{size} {
     }
 
     int maxPossibleMoves = (size.x * size.y) / 2;
-    stonesPlayerOne.reserve(maxPossibleMoves);
-    stonesPlayerTwo.reserve(maxPossibleMoves);
 }
 
 std::vector<Hex::vec2<int>> Hex::Board::getNeighbouringOfType(Hex::vec2<int> tile, Hex::TileType targetType) {

@@ -33,9 +33,6 @@ class Board {
     // Edges facing +- y-direction are player two's
     std::vector<std::vector<TileType>> board;
 
-    std::vector<vec2<int>> stonesPlayerOne;
-    std::vector<vec2<int>> stonesPlayerTwo;
-
     bool tileIsWithinBounds(const vec2<int> &tile) const;
     bool tileIsPlayer1Edge(const vec2<int> &tile)  const;
     bool tileIsPlayer2Edge(const vec2<int> &tile)  const;
@@ -51,7 +48,7 @@ public:
     bool playerOnePlace(const vec2<int> &tile);
     bool playerTwoPlace(const vec2<int> &tile);
 
-    Board(const vec2<int> &size); // initialize board, stonesPlayerOne and stonesPlayerTwo sizes
+    Board(const vec2<int> &size); // initialize board size
 };
 
 } // Hex namespace
