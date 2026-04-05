@@ -29,6 +29,8 @@ class Game {
     GameState searchForWin(); // Look for a path of stones going from one side to the other.
 
 public:
+    std::filesystem::path savePath;
+
     Turn getTurn() const;
     std::shared_ptr<Board>  getBoard() const { return board; };
     GameState getState() const { return state; };
@@ -39,10 +41,10 @@ public:
     void saveGame(std::filesystem::path path);
     void loadGame(std::filesystem::path path);
 
-    Game(const vec2<int> &boardSize)
-    : board{std::make_shared<Board>(boardSize)} {};
-    Game(const vec2<int> &boardSize, std::shared_ptr<TDT4102::AnimationWindow> windowPtr)
-    : board{std::make_shared<Board>(boardSize)}, audioManager{windowPtr} {};
+    Game(const vec2<int> &boardSize, std::filesystem::path savePath)
+    : board{std::make_shared<Board>(boardSize)}, savePath{savePath} {};
+    Game(const vec2<int> &boardSize, std::filesystem::path savePath, std::shared_ptr<TDT4102::AnimationWindow> windowPtr)
+    : board{std::make_shared<Board>(boardSize)}, savePath{savePath}, audioManager{windowPtr} {};
 };
 
 // Helper functions

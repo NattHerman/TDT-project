@@ -43,7 +43,7 @@ void test_game() {
         {0, 4},
     };
 
-    Hex::Game game{{5, 5}};
+    Hex::Game game{{5, 5}, "savedata/statetest.hex"};
 
     for (Hex::vec2<int> move : moves) {
         bool playerOnesTurn = game.getTurn() == Hex::Turn::Player1;
@@ -66,7 +66,7 @@ void test_hexbutton() {
         // {0, 4},
     };
 
-    Hex::Game game{{11,11}};
+    Hex::Game game{{11,11}, "savedata/statetest.hex"};
 
     for (Hex::vec2<int> move : moves) {
         bool playerOnesTurn = game.getTurn() == Hex::Turn::Player1;
@@ -118,7 +118,7 @@ void test_hexGrid() {
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
     windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
 
-    std::shared_ptr<Hex::Game> game = std::make_shared<Hex::Game>(Hex::vec2<int>{11,11}, windowPtr);
+    std::shared_ptr<Hex::Game> game = std::make_shared<Hex::Game>(Hex::vec2<int>{11,11}, "savedata/statetest.hex", windowPtr);
 
     std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>(std::string("root"));
 

@@ -71,7 +71,7 @@ bool Hex::Game::takeTurn(const vec2<int> &move) {
         // }
         turnCounter++;
 
-        saveGame("savedata/state.hex");
+        saveGame(savePath);
     }
 
 
@@ -87,6 +87,8 @@ void Hex::Game::forfeit() {
     default:
         break;
     }
+
+    saveGame(savePath);
 }
 
 void Hex::Game::newGame(vec2<int> size) {
@@ -106,6 +108,8 @@ void Hex::Game::saveGame(std::filesystem::path path) {
     // Line 2: game state.
     outputstream << int(state) << "\n";
 
+    // (there are two ways to do this. 1: save the moves in order and replay them at load, or 2: store the entire board.
+    // i chose option 1, although option 2 would store more information that could be used for a replay or something.)
     // x lines where each line is a row with y elements: board state
     for (std::vector<TileType> &row : board->getBoard()) {
         for (TileType tile : row) {
@@ -116,7 +120,42 @@ void Hex::Game::saveGame(std::filesystem::path path) {
 }
 
 void Hex::Game::loadGame(std::filesystem::path path) {
+    std::cout << "Loading game.." << std::endl;
+    if (!std::filesystem::exists(path)) {
+        std::cout << "Saved state doesnt exist at " << path << ", starting fresh game." << std::endl;
+        return;
+    }
 
+    std::ifstream inputstream{path};
+
+    // Line 1: size of board.
+    vec2<int> boardsize;
+    inputstream >> boardsize.x;
+    inputstream >> boardsize.y;
+
+    // Line 2: game state.
+    int gameStateInt = 0;
+    inputstream >> gameStateInt;
+    state = GameState(gameStateInt);
+
+    // x lines where each line is a row with y elements: board state
+    std::vector<std::vector<TileType>> boardState;
+    boardState.reserve(boardsize.x);
+    for (int x = 0; x < boardsize.x; ++x) {
+        boardState.emplace_back(boardsize.y, TileType::Empty);
+    }
+
+    for (int x = 0; x < boardsize.x; ++x) {
+        for (int y = 0; y < boardsize.y; ++y) {
+            int tileTypeInt = 0;
+            inputstream >> tileTypeInt;
+            boardState.at(x).at(y) = TileType(tileTypeInt);
+        }
+    }
+
+    board = std::make_shared<Board>(boardsize);
+    board->setBoard(boardState);
+    std::cout << "Game loaded." << std::endl;
 }
 
 Hex::GameState Hex::Game::searchForWin() {
