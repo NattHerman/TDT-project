@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "Board.h"
 #include "AudioManager.h"
 #include "pathfinding/BoardNode.h"
@@ -32,7 +34,10 @@ public:
     GameState getState() const { return state; };
     bool takeTurn(const vec2<int> &move);
     void forfeit();
-    void newGame();
+
+    void newGame(vec2<int> size = {11, 11});
+    void saveGame(std::filesystem::path path);
+    void loadGame(std::filesystem::path path);
 
     Game(const vec2<int> &boardSize)
     : board{std::make_shared<Board>(boardSize)} {};

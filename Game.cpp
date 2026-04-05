@@ -3,6 +3,7 @@
 
 #include <random>
 #include <iostream>
+#include <fstream>
 
 Hex::Turn Hex::Game::getTurn() const {
     bool turnIsOdd = turnCounter % 2 == 1;
@@ -69,6 +70,8 @@ bool Hex::Game::takeTurn(const vec2<int> &move) {
         //     audioManager.playSound(Hex::pickRandomAudio(stoneAudioPath));
         // }
         turnCounter++;
+
+        saveGame("savedata/state.hex");
     }
 
 
@@ -86,12 +89,34 @@ void Hex::Game::forfeit() {
     }
 }
 
-void Hex::Game::newGame() {
-    vec2<int> boardSize = board->getSize();
+void Hex::Game::newGame(vec2<int> size) {
     turnCounter = 1;
     state = GameState::Ongoing;
 
-    board = std::make_shared<Board>(boardSize);
+    board = std::make_shared<Board>(size);
+}
+
+void Hex::Game::saveGame(std::filesystem::path path) {
+    std::ofstream outputstream{path};
+
+    // Line 1: size of board.
+    vec2<int> boardsize = board->getSize();
+    outputstream << boardsize.x << " " << boardsize.y << "\n";
+
+    // Line 2: game state.
+    outputstream << int(state) << "\n";
+
+    // x lines where each line is a row with y elements: board state
+    for (std::vector<TileType> &row : board->getBoard()) {
+        for (TileType tile : row) {
+            outputstream << int(tile) << " ";
+        }
+        outputstream << "\n";
+    }
+}
+
+void Hex::Game::loadGame(std::filesystem::path path) {
+
 }
 
 Hex::GameState Hex::Game::searchForWin() {
