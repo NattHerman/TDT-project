@@ -31,6 +31,8 @@
 *.out
 *.app
 
+# Hex save data
+*.hex
 
 .vscode/
 subprojects/
