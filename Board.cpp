@@ -93,8 +93,6 @@ Hex::Board::Board(const vec2<int> &size): size{size} {
     for (int x = 0; x < size.x; ++x) {
         board.emplace_back(size.y, TileType::Empty); // Claude suggestion, more efficient
     }
-
-    int maxPossibleMoves = (size.x * size.y) / 2;
 }
 
 std::vector<Hex::vec2<int>> Hex::Board::getNeighbouringOfType(Hex::vec2<int> tile, Hex::TileType targetType) {

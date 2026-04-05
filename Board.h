@@ -42,6 +42,7 @@ public:
     TileType getTile(const vec2<int> &tile) const;
     vec2<int> getSize() const { return size; };
     std::vector<std::vector<TileType>> getBoard() const { return board; };
+    void setBoard(std::vector<std::vector<TileType>> newBoard) { board = newBoard; };
 
     std::vector<vec2<int>> getNeighbouringOfType(vec2<int> tile, TileType type);
 
