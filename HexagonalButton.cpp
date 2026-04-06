@@ -12,7 +12,6 @@ void Hex::HexagonalButton::update() {
         throw std::runtime_error("windowPtr is null");
     }
 
-
     // Detect button press.
     if (callBack && windowPtr->is_left_mouse_button_down() && visualState == ButtonVisualState::Selected && firstFrameOfClick) {
         callBack(tile); // callback is game.takeTurn 
@@ -33,6 +32,7 @@ Hex::ButtonVisualState Hex::HexagonalButton::getTileState() const {
         return ButtonVisualState::Player2;
     }
 
+    // Button can only be in state "Selected" or "Default" if we get this far, so checking is unneccessary.
     if (getButtonIsSelected()) {
         return ButtonVisualState::Selected;
     }
