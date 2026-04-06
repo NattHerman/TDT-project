@@ -9,14 +9,18 @@ The goal in Hex ([wikipedia page](https://en.wikipedia.org/wiki/Hex_(board_game)
 In order to check if a player has won, we must search for a connecting path of stones going from one side to the opposite. This is done after every move, using an implementation of the [A* pathfinding algorithm](https://www.youtube.com/watch?v=-L-WgKMFuhE).
 
 ## UI system
-The UI elements are stored in a hierarchical node tree structure. Each node has a single parent and can have multiple children, when a node is updated or drawn it also has the responsibility to draw and update all of its children. The position of a node is stored relative to its parent, to get the "global" position of a node the relative positions of the node's parents are recursively used. "Global" here means a point in the same reference frame as the root node's position, a root node has no parents.
+The UI elements are stored in a **hierarchical node tree structure**. Each node has a **single parent** and can have **multiple children**, when a node is updated or drawn it also has the responsibility to draw and update all of its children. The position of a node is stored relative to its parent, to get the "global" position of a node the relative positions of the node's parents are recursively used. "Global" here means a point in the same reference frame as the root node's position, a root node has no parents.
 
-This way of managing UI elements is inspired by the concept of Nodes used in the Godot Engine.
+This way of managing UI elements was inspired by the concept of Nodes used in the Godot Engine.
 
-The UI nodes also store an axis-aligned rectangle representing its bounding box. This bounding box covers the entire visible or relevant surface of a node, making it easy to find the center of a node, or check if a point is near the node.
+The UI nodes also store an axis-aligned rectangle representing its **bounding box**. This rectangle covers the entire visible or relevant surface of a node, making it easy to find the **center of a node**, or check if a **point is near the node**.
 
 ## Saving the game
+The game is saved by storing the current state of the game in a text file.
 
+The first line contains the **size** of the board, the current **turn** and the **status** (whether someone has won) of the game.
+
+The following lines store the state of each tile in the board. It would be more efficient to store the moves in the order they were played and it wouldnt really be more complicated, but i didnt do that.
 
 ## vec2 and rect
 
