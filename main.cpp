@@ -14,25 +14,25 @@ void populateButtonGrid(std::shared_ptr<Hex::UI::HexGrid> grid, std::shared_ptr<
     Hex::vec2<int> boardSize = game->getBoard()->getSize();
     for (int x = 0; x < boardSize.x; ++x) {
         for (int y = 0; y < boardSize.y; ++y) {
-            grid->addChild(createButton({x, y}, windowPtr, game->getBoard(), game));
+            grid->addChild(createButton({x, y}, windowPtr, game));
         }
     }
 
     // Create home player home rows
     for (int y = 1; y < boardSize.y; ++y) {
-        grid->addChild(createButton({-1, y}, windowPtr, game->getBoard(), game));
+        grid->addChild(createButton({-1, y}, windowPtr, game));
     }
 
     for (int y = 0; y < boardSize.y - 1; ++y) {
-        grid->addChild(createButton({boardSize.x, y}, windowPtr, game->getBoard(), game));
+        grid->addChild(createButton({boardSize.x, y}, windowPtr, game));
     }
 
     for (int x = 1; x < boardSize.x; ++x) {
-        grid->addChild(createButton({x, -1}, windowPtr, game->getBoard(), game));
+        grid->addChild(createButton({x, -1}, windowPtr, game));
     }
 
     for (int x = 0; x < boardSize.x - 1; ++x) {
-        grid->addChild(createButton({x, boardSize.y}, windowPtr, game->getBoard(), game));
+        grid->addChild(createButton({x, boardSize.y}, windowPtr, game));
     }
 }
 

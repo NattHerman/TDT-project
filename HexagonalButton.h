@@ -2,7 +2,7 @@
 
 #include "Color.h"
 
-#include "Board.h"
+#include "Game.h"
 #include "UI/UINode.h"
 #include "UI/HexTile.h"
 
@@ -25,7 +25,7 @@ inline std::unordered_map<ButtonVisualState, TDT4102::Color> buttonVisualStateTo
 class HexagonalButton : public UI::HexTile {
     ButtonVisualState visualState = ButtonVisualState::Default;
 
-    std::shared_ptr<Board> boardPtr;
+    std::shared_ptr<Game> gamePtr;
 
     bool getButtonIsSelected() const; // True when cursor is hovering over button.
     ButtonVisualState getTileState() const;
@@ -44,9 +44,9 @@ public:
     HexagonalButton(
         const vec2<int> &tile,
         const std::shared_ptr<TDT4102::AnimationWindow> &windowPtr,
-        const std::shared_ptr<Board> &boardPtr
+        const std::shared_ptr<Game> &gamePtr
     ):  HexTile{tile, "HexButton{" + std::to_string(tile.x) + ", " + std::to_string(tile.y) + "}", windowPtr},
-        boardPtr{boardPtr} {};
+        gamePtr{gamePtr} {};
 };
 
 } // namespace Hex

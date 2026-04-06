@@ -24,7 +24,7 @@ void Hex::HexagonalButton::update() {
 }
 
 Hex::ButtonVisualState Hex::HexagonalButton::getTileState() const {
-    TileType boardTileType = boardPtr->getTile(tile);
+    TileType boardTileType = gamePtr->getBoard()->getTile(tile);
 
     if (boardTileType == TileType::StonePlayerOne || boardTileType == TileType::EdgePlayerOne) {
         return ButtonVisualState::Player1;
@@ -32,8 +32,8 @@ Hex::ButtonVisualState Hex::HexagonalButton::getTileState() const {
         return ButtonVisualState::Player2;
     }
 
-    // Button can only be in state "Selected" or "Default" if we get this far, so checking is unneccessary.
-    if (getButtonIsSelected()) {
+
+    if ((visualState == ButtonVisualState::Default || visualState == ButtonVisualState::Selected) && getButtonIsSelected()) {
         return ButtonVisualState::Selected;
     }
 

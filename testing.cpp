@@ -66,26 +66,26 @@ void test_hexbutton() {
         // {0, 4},
     };
 
-    Hex::Game game{{11,11}, "savedata/statetest.hex"};
+    std::shared_ptr<Hex::Game> game = std::make_shared<Hex::Game>(Hex::vec2<int>{11,11}, std::string("savedata/statetest.hex"));
 
     for (Hex::vec2<int> move : moves) {
-        bool playerOnesTurn = game.getTurn() == Hex::Turn::Player1;
+        bool playerOnesTurn = game->getTurn() == Hex::Turn::Player1;
         std::cout << (playerOnesTurn ? "Turn: Player One" : "Turn: Player Two") << std::endl;
         std::cout << "Move: " << move << std::endl;
         
-        std::cout << "Move " << (game.takeTurn(move) ? "succeded" : "failed") << std::endl;
-        std::cout << *(game.getBoard()) << std::endl;
+        std::cout << "Move " << (game->takeTurn(move) ? "succeded" : "failed") << std::endl;
+        std::cout << *(game->getBoard()) << std::endl;
     }
 
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
     windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
 
     std::vector<Hex::HexagonalButton> buttons;
-    Hex::vec2<int> boardSize = game.getBoard()->getSize();
+    Hex::vec2<int> boardSize = game->getBoard()->getSize();
     for (int x = 0; x < boardSize.x; ++x) {
         for (int y = 0; y < boardSize.y; ++y) {
-            Hex::HexagonalButton button{{x, y}, windowPtr, game.getBoard()};
-            std::function<void(Hex::vec2<int>)> func = std::bind(&Hex::Game::takeTurn, &game, button.getTile());
+            Hex::HexagonalButton button{{x, y}, windowPtr, game};
+            std::function<void(Hex::vec2<int>)> func = std::bind(&Hex::Game::takeTurn, game, button.getTile());
             button.setCallback(func);
             buttons.emplace_back(button);
         }
@@ -104,10 +104,9 @@ void test_hexbutton() {
 std::shared_ptr<Hex::HexagonalButton> createButton(
     Hex::vec2<int> tile,
     const std::shared_ptr<TDT4102::AnimationWindow> &windowPtr,
-    const std::shared_ptr<Hex::Board> &boardPtr,
     std::shared_ptr<Hex::Game> gamePtr
 ) {
-    std::shared_ptr<Hex::HexagonalButton> button = std::make_shared<Hex::HexagonalButton>(tile, windowPtr, gamePtr->getBoard());
+    std::shared_ptr<Hex::HexagonalButton> button = std::make_shared<Hex::HexagonalButton>(tile, windowPtr, gamePtr);
     std::function<void(Hex::vec2<int>)> func = std::bind(&Hex::Game::takeTurn, gamePtr, button->getTile());
     button->setCallback(func);
 
@@ -132,25 +131,25 @@ void test_hexGrid() {
     Hex::vec2<int> boardSize = game->getBoard()->getSize();
     for (int x = 0; x < boardSize.x; ++x) {
         for (int y = 0; y < boardSize.y; ++y) {
-            grid->addChild(createButton({x, y}, windowPtr, game->getBoard(), game));
+            grid->addChild(createButton({x, y}, windowPtr, game));
         }
     }
 
     // Create home player home rows
     for (int y = 1; y < boardSize.y; ++y) {
-        grid->addChild(createButton({-1, y}, windowPtr, game->getBoard(), game));
+        grid->addChild(createButton({-1, y}, windowPtr, game));
     }
 
     for (int y = 0; y < boardSize.y - 1; ++y) {
-        grid->addChild(createButton({boardSize.x, y}, windowPtr, game->getBoard(), game));
+        grid->addChild(createButton({boardSize.x, y}, windowPtr, game));
     }
 
     for (int x = 1; x < boardSize.x; ++x) {
-        grid->addChild(createButton({x, -1}, windowPtr, game->getBoard(), game));
+        grid->addChild(createButton({x, -1}, windowPtr, game));
     }
 
     for (int x = 0; x < boardSize.x - 1; ++x) {
-        grid->addChild(createButton({x, boardSize.y}, windowPtr, game->getBoard(), game));
+        grid->addChild(createButton({x, boardSize.y}, windowPtr, game));
     }
 
     while (!windowPtr->should_close()) {

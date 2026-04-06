@@ -22,7 +22,6 @@ void test_hexbutton();
 std::shared_ptr<Hex::HexagonalButton> createButton(
     Hex::vec2<int> tile,
     const std::shared_ptr<TDT4102::AnimationWindow> &windowPtr,
-    const std::shared_ptr<Hex::Board> &boardPtr,
     std::shared_ptr<Hex::Game> gamePtr
 );
 
