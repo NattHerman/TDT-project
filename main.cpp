@@ -75,13 +75,13 @@ int main() {
     std::shared_ptr<Hex::UI::Button> forfeitButton = std::make_shared<Hex::UI::Button>("Forfeit", 90, windowPtr);
     forfeitButton->setColor(TDT4102::Color{0x48814d});
     forfeitButton->setHighlighColor(TDT4102::Color{0x68a26c});
-    forfeitButton->setCallback(std::bind(Hex::Game::forfeit, game));
+    forfeitButton->setCallback(std::bind(&Hex::Game::forfeit, game));
     rootNode->addChild(forfeitButton);
 
     std::shared_ptr<Hex::UI::Button> newgameButton = std::make_shared<Hex::UI::Button>("New Game", 140, windowPtr);
     newgameButton->setColor(TDT4102::Color{0x48814d});
     newgameButton->setHighlighColor(TDT4102::Color{0x68a26c});
-    newgameButton->setCallback(std::bind(newGame, grid, game, windowPtr));
+    newgameButton->setCallback(std::bind(&newGame, grid, game, windowPtr));
     rootNode->addChild(newgameButton);
 
     // Fills the grid with hexagonal buttons
