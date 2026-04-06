@@ -11,8 +11,8 @@
 namespace Hex {
 namespace UI {
 
-// Inheritance courtesy of Claude
-class UINode : public std::enable_shared_from_this<UINode> {
+// Base class for all UI Nodes.
+class UINode : public std::enable_shared_from_this<UINode> /* Inheritance courtesy of Claude */{ 
 protected:
     rect<int> boundingBox;
     std::string name;
@@ -27,7 +27,9 @@ protected:
     virtual void updateBoundingBox();
 
 public:
+    // Relative to parent
     vec2<int> position = {0, 0};
+    // Node is only drawn and updated when set to true.
     bool visible = true;
 
     void addChild(const std::shared_ptr<UINode> &child);

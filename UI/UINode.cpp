@@ -23,7 +23,7 @@ std::shared_ptr<Hex::UI::UINode> Hex::UI::UINode::removeChild(const std::shared_
         }
     }
 
-    return nullptr;
+    return nullptr; // maybe this is bad
 }
 
 // returns removed child, nullptr if none were removed.
@@ -37,7 +37,7 @@ std::shared_ptr<Hex::UI::UINode> Hex::UI::UINode::removeChild(int index) {
         return removedChild;
     }
 
-    return nullptr;
+    return nullptr; // maybe this is bad
 }
 
 Hex::vec2<int> Hex::UI::UINode::getGlobalPosition() const {
