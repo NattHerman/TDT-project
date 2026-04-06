@@ -42,9 +42,9 @@ public:
     void loadGame(std::filesystem::path path);
 
     Game(const vec2<int> &boardSize, std::filesystem::path savePath)
-    : board{std::make_shared<Board>(boardSize)}, savePath{savePath} {};
+    : board{std::make_shared<Board>(boardSize)}, savePath{savePath} { loadGame(savePath); };
     Game(const vec2<int> &boardSize, std::filesystem::path savePath, std::shared_ptr<TDT4102::AnimationWindow> windowPtr)
-    : board{std::make_shared<Board>(boardSize)}, savePath{savePath}, audioManager{windowPtr} {};
+    : board{std::make_shared<Board>(boardSize)}, savePath{savePath}, audioManager{windowPtr} { loadGame(savePath); };
 };
 
 // Helper functions
