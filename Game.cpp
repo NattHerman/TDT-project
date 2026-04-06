@@ -101,15 +101,15 @@ void Hex::Game::newGame(vec2<int> size) {
 void Hex::Game::saveGame(std::filesystem::path path) {
     std::ofstream outputstream{path};
 
-    // Line 1: size of board.
+    // Line 1: <board size x> <board size y> <game state> <turn count>.
     vec2<int> boardsize = board->getSize();
-    outputstream << boardsize.x << " " << boardsize.y << "\n";
+    outputstream << boardsize.x << " " << boardsize.y << " ";
+    outputstream << int(state) << " ";
+    outputstream << turnCounter << "\n";
 
-    // Line 2: game state.
-    outputstream << int(state) << "\n";
+    // (there are two ways i could approach saving the board. 1: save the moves in order and replay them at load, or 2: store the entire board.
+    // i chose option 2, although option 1 would store more information that could be used for a replay or something.)
 
-    // (there are two ways to do this. 1: save the moves in order and replay them at load, or 2: store the entire board.
-    // i chose option 1, although option 2 would store more information that could be used for a replay or something.)
     // x lines where each line is a row with y elements: board state
     for (std::vector<TileType> &row : board->getBoard()) {
         for (TileType tile : row) {
@@ -128,33 +128,64 @@ void Hex::Game::loadGame(std::filesystem::path path) {
 
     std::ifstream inputstream{path};
 
-    // Line 1: size of board.
+    // Line 1: <board size x> <board size y> <game state> <turn count>.
+    std::string line1;
+    std::getline(inputstream, line1);
+    std::stringstream line1Stream{line1};
+    line1Stream.exceptions(std::ios::failbit); // help from claude, figure out how to make >> operator throw on failure.
+
+    // Values loaded from line 1.
     vec2<int> boardsize;
-    inputstream >> boardsize.x;
-    inputstream >> boardsize.y;
-
-    // Line 2: game state.
     int gameStateInt = 0;
-    inputstream >> gameStateInt;
-    state = GameState(gameStateInt);
+    int turnCount = 0;
 
-    // x lines where each line is a row with y elements: board state
+    try {
+        line1Stream >> boardsize.x;
+        line1Stream >> boardsize.y;
+        line1Stream >> gameStateInt;
+        line1Stream >> turnCount;
+
+    } catch (std::ios_base::failure) {
+        std::cout << "Saved state loading line 1 failed " << path << ", starting fresh game." << std::endl;
+        return;
+    }
+
+    // Values loaded from next lines.
     std::vector<std::vector<TileType>> boardState;
-    boardState.reserve(boardsize.x);
-    for (int x = 0; x < boardsize.x; ++x) {
-        boardState.emplace_back(boardsize.y, TileType::Empty);
-    }
 
-    for (int x = 0; x < boardsize.x; ++x) {
-        for (int y = 0; y < boardsize.y; ++y) {
-            int tileTypeInt = 0;
-            inputstream >> tileTypeInt;
-            boardState.at(x).at(y) = TileType(tileTypeInt);
+    int lineNumer = 2;
+    try {
+        // Initialize vectors for storing new board state
+        boardState.reserve(boardsize.x);
+        for (int x = 0; x < boardsize.x; ++x) {
+            boardState.emplace_back(boardsize.y, TileType::Empty);
         }
+
+        // Load board state from filestream
+        for (int x = 0; x < boardsize.x; ++x) {
+            std::string line;
+            std::getline(inputstream, line);
+            std::stringstream lineStream{line};
+            lineStream.exceptions(std::ios::failbit);
+            
+            for (int y = 0; y < boardsize.y; ++y) {
+                int tileTypeInt = 0;
+                lineStream >> tileTypeInt;
+                boardState.at(x).at(y) = TileType(tileTypeInt);
+            }
+            lineNumer++;
+        }
+    } catch (std::ios_base::failure) {
+        std::cout << "Saved state loading line " << lineNumer << " failed " << path << ", starting fresh game." << std::endl;
+        return;
     }
 
+    // Set values after successful loading
+    state = GameState(gameStateInt);
+    turnCounter = turnCount;
     board = std::make_shared<Board>(boardsize);
     board->setBoard(boardState);
+
     std::cout << "Game loaded." << std::endl;
 }
 
