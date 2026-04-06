@@ -38,7 +38,7 @@ void populateButtonGrid(std::shared_ptr<Hex::UI::HexGrid> grid, std::shared_ptr<
 
 void newGame(std::shared_ptr<Hex::UI::HexGrid> grid, std::shared_ptr<Hex::Game> game, std::shared_ptr<TDT4102::AnimationWindow> windowPtr) {
     game->newGame();
-    populateButtonGrid(grid, game, windowPtr);
+    // populateButtonGrid(grid, game, windowPtr);
 }
 
 int main() {
@@ -51,7 +51,6 @@ int main() {
 
     // Initialize Hex Game object
     std::shared_ptr<Hex::Game> game = std::make_shared<Hex::Game>(Hex::vec2<int>{11, 11}, savePath, windowPtr);
-    game->loadGame(savePath);
 
     // Root Node contains all nodes to be drawn, as children
     std::shared_ptr<Hex::UI::UINode> rootNode = std::make_shared<Hex::UI::UINode>(std::string("root"));
