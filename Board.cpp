@@ -120,3 +120,13 @@ std::vector<Hex::vec2<int>> Hex::Board::getNeighbouringOfType(Hex::vec2<int> til
 
     return tiles;
 }
+
+void Hex::Board::resetBoard() {
+    std::vector<std::vector<TileType>> emptyBoard;
+    emptyBoard.reserve(size.x);
+    for (int x = 0; x < size.x; ++x) {
+        emptyBoard.emplace_back(size.y, TileType::Empty);
+    }
+
+    setBoard(emptyBoard);
+}
