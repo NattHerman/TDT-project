@@ -23,6 +23,7 @@ class Game {
     int turnCounter = 1;
     GameState state = GameState::Ongoing;
     std::shared_ptr<Board> board;
+    std::vector<vec2<int>> moves;
 
     AudioManager audioManager;
 
@@ -34,15 +35,20 @@ public:
     Turn getTurn() const;
     std::shared_ptr<Board>  getBoard() const { return board; };
     GameState getState() const { return state; };
-    bool takeTurn(const vec2<int> &move);
+    void takeTurn(const vec2<int> &move, bool save = true);
     void forfeit();
+
+    void playMoves(std::vector<vec2<int>> moves);
 
     void newGame(vec2<int> size = {11, 11});
     void saveGame(std::filesystem::path path);
     void loadGame(std::filesystem::path path);
 
     Game(const vec2<int> &boardSize, std::filesystem::path savePath)
-    : board{std::make_shared<Board>(boardSize)}, savePath{savePath} { loadGame(savePath); };
+    : board{std::make_shared<Board>(boardSize)}, savePath{savePath} {
+        loadGame(savePath);
+        moves.reserve(boardSize.x*boardSize.y);
+    }
     Game(const vec2<int> &boardSize, std::filesystem::path savePath, std::shared_ptr<TDT4102::AnimationWindow> windowPtr)
     : board{std::make_shared<Board>(boardSize)}, savePath{savePath}, audioManager{windowPtr} { loadGame(savePath); };
 };

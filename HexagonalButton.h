@@ -31,13 +31,13 @@ class HexagonalButton : public UI::HexTile {
     ButtonVisualState getTileState() const;
 
     // Function that is called when button is pressed, with tile as input.
-    std::function<void(vec2<int>)> callBack;
+    std::function<void(vec2<int>, bool)> callBack;
     bool firstFrameOfClick = false;
 
 public:
     void update() override;
 
-    void setCallback(std::function<void(vec2<int>)> callBack);
+    void setCallback(std::function<void(vec2<int>, bool)> callBack);
     vec2<int> getTile() const { return tile; };
     int getRadius() const { return radius; };
 

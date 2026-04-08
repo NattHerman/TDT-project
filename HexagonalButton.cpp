@@ -15,7 +15,7 @@ void Hex::HexagonalButton::update() {
     // Detect button press.
     if (callBack && windowPtr->is_left_mouse_button_down() && visualState == ButtonVisualState::Selected && firstFrameOfClick) {
         try {
-            callBack(tile); // callback is game.takeTurn 
+            callBack(tile, true); // callback is game.takeTurn 
         } catch (InvalidMoveError) { /* Ignore it*/ }
     }
     
@@ -51,6 +51,6 @@ bool Hex::HexagonalButton::getButtonIsSelected() const {
     return mouseDistanceSquared < radius*radius;
 }
 
-void Hex::HexagonalButton::setCallback(std::function<void(vec2<int>)> callBack) {
+void Hex::HexagonalButton::setCallback(std::function<void(vec2<int>, bool)> callBack) {
     this->callBack = callBack;
 }

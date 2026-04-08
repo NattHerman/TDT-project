@@ -45,7 +45,7 @@ TDT4102::Audio Hex::pickRandomAudio(std::filesystem::path directory) {
 }
 
 // Throws InvalidMoveError if move is invalid
-void Hex::Game::takeTurn(const vec2<int> &move) {
+void Hex::Game::takeTurn(const vec2<int> &move, bool save) {
     if (state != GameState::Ongoing) { return; }
 
     if (getTurn() == Turn::Player1) {
@@ -68,8 +68,21 @@ void Hex::Game::takeTurn(const vec2<int> &move) {
     //     audioManager.playSound(Hex::pickRandomAudio(stoneAudioPath));
     // }
     turnCounter++;
+    moves.emplace_back(move);
 
-    saveGame(savePath);
+    if (save) {
+        saveGame(savePath);
+    }
+}
+
+// Resets the board, and plays moves from start.
+void Hex::Game::playMoves(std::vector<vec2<int>> moves) {
+    board->resetBoard();
+    state = GameState::Ongoing;
+    turnCounter = 1;
+    for (vec2<int> move : moves) {
+        takeTurn(move, false); // Can throw
+    }
 }
 
 void Hex::Game::forfeit() {
@@ -88,6 +101,7 @@ void Hex::Game::forfeit() {
 void Hex::Game::newGame(vec2<int> size) {
     turnCounter = 1;
     state = GameState::Ongoing;
+    moves.clear();
 
     board = std::make_shared<Board>(size);
 }
@@ -101,15 +115,13 @@ void Hex::Game::saveGame(std::filesystem::path path) {
     outputstream << int(state) << " ";
     outputstream << turnCounter << "\n";
 
-    // (there are two ways i could approach saving the board. 1: save the moves in order and replay them at load, or 2: store the entire board.
-    // i chose option 2, although option 1 would store more information that could be used for a replay or something.)
-
-    // x lines where each line is a row with y elements: board state
-    for (std::vector<TileType> &row : board->getBoard()) {
-        for (TileType tile : row) {
-            outputstream << int(tile) << " ";
-        }
-        outputstream << "\n";
+    // Line 2 and onward:
+    // <move 1 x> <move 1 y>
+    // <move 2 x> <move 2 y>
+    // ...
+    // <move n x> <move n y>, where n = turnCounter - 1 = moves.size()
+    for (vec2<int> move : moves) {
+        outputstream << move.x << " " << move.y << "\n";
     }
 }
 
@@ -129,15 +141,15 @@ void Hex::Game::loadGame(std::filesystem::path path) {
     line1Stream.exceptions(std::ios::failbit); // help from claude, figure out how to make >> operator throw on failure.
 
     // Values loaded from line 1.
-    vec2<int> boardsize;
-    int gameStateInt = 0;
-    int turnCount = 0;
+    vec2<int> loadedBoardsize;
+    int loadedGameStateInt = 0;
+    int loadedTurnCount = 0;
 
     try {
-        line1Stream >> boardsize.x;
-        line1Stream >> boardsize.y;
-        line1Stream >> gameStateInt;
-        line1Stream >> turnCount;
+        line1Stream >> loadedBoardsize.x;
+        line1Stream >> loadedBoardsize.y;
+        line1Stream >> loadedGameStateInt;
+        line1Stream >> loadedTurnCount;
 
     } catch (std::ios_base::failure) {
         std::cout << "Saved state loading line 1 failed " << path << ", starting fresh game." << std::endl;
@@ -145,28 +157,23 @@ void Hex::Game::loadGame(std::filesystem::path path) {
     }
 
     // Values loaded from next lines.
-    std::vector<std::vector<TileType>> boardState;
+    std::vector<vec2<int>> loadedMoves;
 
-    int lineNumer = 2;
+    int lineNumer = 2; // for the error
     try {
-        // Initialize vectors for storing new board state
-        boardState.reserve(boardsize.x);
-        for (int x = 0; x < boardsize.x; ++x) {
-            boardState.emplace_back(boardsize.y, TileType::Empty);
-        }
+        loadedMoves.reserve(loadedBoardsize.x * loadedBoardsize.y);
 
-        // Load board state from filestream
-        for (int x = 0; x < boardsize.x; ++x) {
+        for (int i = 0; i < loadedTurnCount - 1; ++i) {
             std::string line;
             std::getline(inputstream, line);
             std::stringstream lineStream{line};
             lineStream.exceptions(std::ios::failbit);
             
-            for (int y = 0; y < boardsize.y; ++y) {
-                int tileTypeInt = 0;
-                lineStream >> tileTypeInt;
-                boardState.at(x).at(y) = TileType(tileTypeInt);
-            }
+            vec2<int> move;
+            lineStream >> move.x;
+            lineStream >> move.y;
+            loadedMoves.emplace_back(move);
+            
             lineNumer++;
         }
     } catch (std::ios_base::failure) {
@@ -175,10 +182,14 @@ void Hex::Game::loadGame(std::filesystem::path path) {
     }
 
     // Set values after successful loading
-    state = GameState(gameStateInt);
-    turnCounter = turnCount;
-    board = std::make_shared<Board>(boardsize);
-    board->setBoard(boardState);
+    state = GameState(loadedGameStateInt);
+    turnCounter = loadedTurnCount;
+    try {
+        playMoves(loadedMoves);
+    } catch (InvalidMoveError& error) {
+        std::cout << "Saved move " << error.move << ", turn " << turnCounter << " is invalid " << path << ", starting fresh game." << std::endl;
+        return;
+    }
 
     std::cout << "Game loaded." << std::endl;
 }

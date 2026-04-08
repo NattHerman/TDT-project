@@ -85,7 +85,7 @@ void test_hexbutton() {
     for (int x = 0; x < boardSize.x; ++x) {
         for (int y = 0; y < boardSize.y; ++y) {
             Hex::HexagonalButton button{{x, y}, windowPtr, game};
-            std::function<void(Hex::vec2<int>)> func = std::bind(&Hex::Game::takeTurn, game, button.getTile());
+            std::function<void(Hex::vec2<int>, bool)> func = std::bind(&Hex::Game::takeTurn, game, button.getTile(), true);
             button.setCallback(func);
             buttons.emplace_back(button);
         }
@@ -107,7 +107,7 @@ std::shared_ptr<Hex::HexagonalButton> createButton(
     std::shared_ptr<Hex::Game> gamePtr
 ) {
     std::shared_ptr<Hex::HexagonalButton> button = std::make_shared<Hex::HexagonalButton>(tile, windowPtr, gamePtr);
-    std::function<void(Hex::vec2<int>)> func = std::bind(&Hex::Game::takeTurn, gamePtr, button->getTile());
+    std::function<void(Hex::vec2<int>, bool)> func = std::bind(&Hex::Game::takeTurn, gamePtr, button->getTile(), true);
     button->setCallback(func);
 
     return button;
