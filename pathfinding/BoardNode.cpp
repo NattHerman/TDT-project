@@ -28,7 +28,7 @@ double BoardNode::distance(std::shared_ptr<Node> other) {
     vec2<double> position = xAxis * tile.x + yAxis * tile.y;
     vec2<double> otherPosition = xAxis * otherBoardNode->tile.x + yAxis * otherBoardNode->tile.y;
 
-    return (position - position).length();
+    return (position - otherPosition).length();
 }
 
 std::vector<std::shared_ptr<Node>> BoardNode::getNeighbours() {
