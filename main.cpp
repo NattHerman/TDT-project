@@ -41,6 +41,16 @@ void newGame(std::shared_ptr<Hex::UI::HexGrid> grid, std::shared_ptr<Hex::Game> 
     // populateButtonGrid(grid, game, windowPtr);
 }
 
+void forward(std::shared_ptr<int> index, std::shared_ptr<Hex::Game> game) {
+    *index = std::min(*index + 1, int(game->getMoves().size()) - 1);
+    game->displayMove(*index);
+}
+
+void backward(std::shared_ptr<int> index, std::shared_ptr<Hex::Game> game) {
+    *index = std::max(*index - 1, 0);
+    game->displayMove(*index);
+}
+
 int main() {
     // Where the game state file is stored
     std::filesystem::path savePath{"savedata/state.hex"};
@@ -89,6 +99,19 @@ int main() {
     undoButton->setCallback(std::bind(&Hex::Game::undo, game));
     rootNode->addChild(undoButton);
 
+    std::shared_ptr<int> moveIndex = std::make_shared<int>(0);
+    std::shared_ptr<Hex::UI::Button> forwardButton = std::make_shared<Hex::UI::Button>("Forward", 120, windowPtr);
+    forwardButton->setColor(TDT4102::Color{0x48814d});
+    forwardButton->setHighlighColor(TDT4102::Color{0x68a26c});
+    forwardButton->setCallback(std::bind(&forward, moveIndex, game));
+    rootNode->addChild(forwardButton);
+
+    std::shared_ptr<Hex::UI::Button> backwardButton = std::make_shared<Hex::UI::Button>("Backward", 120, windowPtr);
+    backwardButton->setColor(TDT4102::Color{0x48814d});
+    backwardButton->setHighlighColor(TDT4102::Color{0x68a26c});
+    backwardButton->setCallback(std::bind(&backward, moveIndex, game));
+    rootNode->addChild(backwardButton);
+
     // Fills the grid with hexagonal buttons
     populateButtonGrid(grid, game, windowPtr);
 
@@ -98,9 +121,11 @@ int main() {
         bool gameIsOngoing = game->getState() == Hex::GameState::Ongoing;
         bool player1Won = game->getState() == Hex::GameState::Player1Won;
         
-        // Make GameOver thing visible when game ends
+        // Some things are only visible when game is over, or when game is ongoing
         gameOverLabel->visible = !gameIsOngoing;
         newgameButton->visible = !gameIsOngoing;
+        forwardButton->visible = !gameIsOngoing;
+        backwardButton->visible = !gameIsOngoing;
         forfeitButton->visible = gameIsOngoing;
         undoButton->visible = gameIsOngoing;
         if (!gameIsOngoing) {
@@ -115,6 +140,8 @@ int main() {
         { forfeitButton->position.x /= 3; }
         newgameButton->position = {(screenSize.x * 3) / 4, screenSize.y - 75};
         undoButton->position = {screenSize.x / 4, screenSize.y - 75};
+        forwardButton->position = {screenSize.x / 4, screenSize.y - 100};
+        backwardButton->position = {screenSize.x / 4, screenSize.y - 50};
 
         rootNode->update();
         grid->position = screenSize / 2 - grid->getBoundingBox().getCenter();
