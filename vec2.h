@@ -31,6 +31,10 @@ struct vec2 {
         return sqrt(length_squared());
     }
 
+    std::string toString() const {
+        return "{" + std::string(rhs.x) + ", " + std::string(rhs.y) + "}";
+    }
+
     // Constructors
     vec2() = default;
     vec2(T x, T y): x{x}, y{y} {};
