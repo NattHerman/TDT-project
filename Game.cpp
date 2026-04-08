@@ -44,17 +44,14 @@ TDT4102::Audio Hex::pickRandomAudio(std::filesystem::path directory) {
     return TDT4102::Audio(audioFiles.at(index));
 }
 
+// Throws InvalidMoveError if move is invalid
 void Hex::Game::takeTurn(const vec2<int> &move) {
     if (state != GameState::Ongoing) { return; }
 
-    try {
-        if (getTurn() == Turn::Player1) {
-            board->playerOnePlace(move);
-        } else if (getTurn() == Turn::Player2) {
-            board->playerTwoPlace(move);
-        }
-    } catch (InvalidMoveError) {
-        return;
+    if (getTurn() == Turn::Player1) {
+        board->playerOnePlace(move); // Can throw
+    } else if (getTurn() == Turn::Player2) {
+        board->playerTwoPlace(move); // Can throw
     }
 
     // DEBUG RETURNED NEIGHBOURS
