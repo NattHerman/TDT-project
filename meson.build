@@ -5,6 +5,13 @@ project('GUI Project', 'cpp',
                      'c_std=c17',
                      'default_library=static'])
 
+add_project_arguments(
+  '-Wno-reorder',
+  '-Wno-narrowing',
+  '-Wno-unused-variable',
+  language : 'cpp'
+)
+
 animationwindow_dep = dependency('animationwindow', fallback: ['animationwindow', 'animationwindow_dep'])
 std_lib_facilities_dep = dependency('std_lib_facilities', fallback: ['std_lib_facilities', 'std_lib_facilities_dep'])
 
