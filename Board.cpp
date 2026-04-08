@@ -69,22 +69,20 @@ Hex::TileType Hex::Board::getTile(const vec2<int> &tile) const {
     return TileType::OutOfBounds;
 }
 
-bool Hex::Board::playerOnePlace(const vec2<int> &tile) {
+void Hex::Board::playerOnePlace(const vec2<int> &tile) {
     if (!tileIsFree(tile)) {
-        return false;
+        throw InvalidMoveError("Move " + tile.toString() + " is invalid.");
     }
 
     board.at(tile.x).at(tile.y) = TileType::StonePlayerOne;
-    return true;
 }
 
-bool Hex::Board::playerTwoPlace(const vec2<int> &tile) {
+void Hex::Board::playerTwoPlace(const vec2<int> &tile) {
     if (!tileIsFree(tile)) {
-        return false;
+        throw InvalidMoveError("Move " + tile.toString() + " is invalid.");
     }
 
     board.at(tile.x).at(tile.y) = TileType::StonePlayerTwo;
-    return true;
 }
 
 Hex::Board::Board(const vec2<int> &size): size{size} {

@@ -50,7 +50,7 @@ void test_game() {
         std::cout << (playerOnesTurn ? "Turn: Player One" : "Turn: Player Two") << std::endl;
         std::cout << "Move: " << move << std::endl;
         
-        std::cout << "Move " << (game.takeTurn(move) ? "succeded" : "failed") << std::endl;
+        // std::cout << "Move " << (game.takeTurn(move) ? "succeded" : "failed") << std::endl;
         std::cout << *(game.getBoard()) << std::endl;
     }
 }
@@ -73,7 +73,7 @@ void test_hexbutton() {
         std::cout << (playerOnesTurn ? "Turn: Player One" : "Turn: Player Two") << std::endl;
         std::cout << "Move: " << move << std::endl;
         
-        std::cout << "Move " << (game->takeTurn(move) ? "succeded" : "failed") << std::endl;
+        // std::cout << "Move " << (game->takeTurn(move) ? "succeded" : "failed") << std::endl;
         std::cout << *(game->getBoard()) << std::endl;
     }
 

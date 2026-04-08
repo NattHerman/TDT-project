@@ -7,6 +7,11 @@
 
 namespace Hex {
 
+struct InvalidMoveError : public std::runtime_error {
+    InvalidMoveError(std::string message)
+    : std::runtime_error{message} {}
+};
+
 enum class TileType {
     Empty = 0,
     StonePlayerOne,
@@ -46,8 +51,8 @@ public:
 
     std::vector<vec2<int>> getNeighbouringOfType(vec2<int> tile, TileType type);
 
-    bool playerOnePlace(const vec2<int> &tile);
-    bool playerTwoPlace(const vec2<int> &tile);
+    void playerOnePlace(const vec2<int> &tile);
+    void playerTwoPlace(const vec2<int> &tile);
 
     Board(const vec2<int> &size); // initialize board size
 };

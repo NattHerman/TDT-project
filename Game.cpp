@@ -44,15 +44,17 @@ TDT4102::Audio Hex::pickRandomAudio(std::filesystem::path directory) {
     return TDT4102::Audio(audioFiles.at(index));
 }
 
-bool Hex::Game::takeTurn(const vec2<int> &move) {
-    if (state != GameState::Ongoing) { return false; }
+void Hex::Game::takeTurn(const vec2<int> &move) {
+    if (state != GameState::Ongoing) { return; }
 
-    bool moveSuccess = false;
-
-    if (getTurn() == Turn::Player1) {
-        moveSuccess = board->playerOnePlace(move);
-    } else if (getTurn() == Turn::Player2) {
-        moveSuccess = board->playerTwoPlace(move);
+    try {
+        if (getTurn() == Turn::Player1) {
+            board->playerOnePlace(move);
+        } else if (getTurn() == Turn::Player2) {
+            board->playerTwoPlace(move);
+        }
+    } catch (InvalidMoveError) {
+        return;
     }
 
     // DEBUG RETURNED NEIGHBOURS
@@ -61,21 +63,16 @@ bool Hex::Game::takeTurn(const vec2<int> &move) {
     //     std::cout << "returned: " << tile << std::endl;
     // }
 
-    if (moveSuccess) {
-        state = searchForWin();
+    state = searchForWin();
 
-        // Play stone-placing sfx // REMEMBER TO LOAD BEFORE DOING STUFF
-        // if (audioManager) {
-        //     std::filesystem::path stoneAudioPath{"audiodata/stone"};
-        //     audioManager.playSound(Hex::pickRandomAudio(stoneAudioPath));
-        // }
-        turnCounter++;
+    // Play stone-placing sfx // REMEMBER TO LOAD BEFORE DOING STUFF
+    // if (audioManager) {
+    //     std::filesystem::path stoneAudioPath{"audiodata/stone"};
+    //     audioManager.playSound(Hex::pickRandomAudio(stoneAudioPath));
+    // }
+    turnCounter++;
 
-        saveGame(savePath);
-    }
-
-
-    return moveSuccess;
+    saveGame(savePath);
 }
 
 void Hex::Game::forfeit() {
