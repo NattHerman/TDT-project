@@ -20,7 +20,7 @@ The game is saved by storing the current state of the game in a text file.
 
 The first line contains the **size** of the board, the current **turn** and the **status** (whether someone has won) of the game.
 
-The following lines store the state of each tile in the board. It would be more efficient to store the moves in the order they were played and it wouldnt really be more complicated, but I didnt do it that way.
+The following lines are a list of moves which are quickly played when loading.
 
 # Important classes
 
