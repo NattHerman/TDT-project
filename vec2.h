@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include <string>
 
 #include "Point.h"
 
@@ -32,7 +33,7 @@ struct vec2 {
     }
 
     std::string toString() const {
-        return "{" + std::string(rhs.x) + ", " + std::string(rhs.y) + "}";
+        return "{" + std::to_string(x) + ", " + std::to_string(y) + "}";
     }
 
     // Constructors
