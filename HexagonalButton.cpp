@@ -14,7 +14,9 @@ void Hex::HexagonalButton::update() {
 
     // Detect button press.
     if (callBack && windowPtr->is_left_mouse_button_down() && visualState == ButtonVisualState::Selected && firstFrameOfClick) {
-        callBack(tile); // callback is game.takeTurn 
+        try {
+            callBack(tile); // callback is game.takeTurn 
+        } catch (InvalidMoveError) { /* Ignore it*/ }
     }
     
     // Detect first frame of click.
