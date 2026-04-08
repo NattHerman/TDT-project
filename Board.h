@@ -8,8 +8,10 @@
 namespace Hex {
 
 struct InvalidMoveError : public std::runtime_error {
-    InvalidMoveError(std::string message)
-    : std::runtime_error{message} {}
+    vec2<int> move;
+
+    InvalidMoveError(std::string message, vec2<int> move)
+    : std::runtime_error{message}, move{move} {}
 };
 
 enum class TileType {

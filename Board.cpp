@@ -71,7 +71,7 @@ Hex::TileType Hex::Board::getTile(const vec2<int> &tile) const {
 
 void Hex::Board::playerOnePlace(const vec2<int> &tile) {
     if (!tileIsFree(tile)) {
-        throw InvalidMoveError("Move " + tile.toString() + " is invalid.");
+        throw InvalidMoveError("Move " + tile.toString() + " is invalid.", tile);
     }
 
     board.at(tile.x).at(tile.y) = TileType::StonePlayerOne;
@@ -79,7 +79,7 @@ void Hex::Board::playerOnePlace(const vec2<int> &tile) {
 
 void Hex::Board::playerTwoPlace(const vec2<int> &tile) {
     if (!tileIsFree(tile)) {
-        throw InvalidMoveError("Move " + tile.toString() + " is invalid.");
+        throw InvalidMoveError("Move " + tile.toString() + " is invalid.", tile);
     }
 
     board.at(tile.x).at(tile.y) = TileType::StonePlayerTwo;
