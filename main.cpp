@@ -83,6 +83,12 @@ int main() {
     newgameButton->setCallback(std::bind(&newGame, grid, game, windowPtr));
     rootNode->addChild(newgameButton);
 
+    std::shared_ptr<Hex::UI::Button> undoButton = std::make_shared<Hex::UI::Button>("Undo", 70, windowPtr);
+    undoButton->setColor(TDT4102::Color{0x48814d});
+    undoButton->setHighlighColor(TDT4102::Color{0x68a26c});
+    undoButton->setCallback(std::bind(&Hex::Game::undo, game));
+    rootNode->addChild(undoButton);
+
     // Fills the grid with hexagonal buttons
     populateButtonGrid(grid, game, windowPtr);
 
@@ -96,6 +102,7 @@ int main() {
         gameOverLabel->visible = !gameIsOngoing;
         newgameButton->visible = !gameIsOngoing;
         forfeitButton->visible = gameIsOngoing;
+        undoButton->visible = gameIsOngoing;
         if (!gameIsOngoing) {
             gameOverLabel->position.x = screenSize.x / 2;
             gameOverLabel->text = "Player " + std::string(player1Won ? "1" : "2") + " won!";
@@ -107,6 +114,7 @@ int main() {
         if (game->getTurn() == Hex::Turn::Player1)
         { forfeitButton->position.x /= 3; }
         newgameButton->position = {(screenSize.x * 3) / 4, screenSize.y - 75};
+        undoButton->position = {screenSize.x / 4, screenSize.y - 75};
 
         rootNode->update();
         grid->position = screenSize / 2 - grid->getBoundingBox().getCenter();

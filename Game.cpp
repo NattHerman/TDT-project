@@ -75,6 +75,14 @@ void Hex::Game::takeTurn(const vec2<int> &move, bool save) {
     }
 }
 
+void Hex::Game::undo() {
+    if (turnCounter <= 1) return;
+    turnCounter--;
+    vec2<int> lastMove = moves.back();
+    board->board.at(lastMove.x).at(lastMove.y) = TileType::Empty;
+    moves.pop_back();
+}
+
 // Resets the board, and plays moves from start.
 void Hex::Game::playMoves(std::vector<vec2<int>> moves) {
     board->resetBoard();

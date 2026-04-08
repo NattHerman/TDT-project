@@ -35,7 +35,9 @@ public:
     Turn getTurn() const;
     std::shared_ptr<Board>  getBoard() const { return board; };
     GameState getState() const { return state; };
+
     void takeTurn(const vec2<int> &move, bool save = true);
+    void undo();
     void forfeit();
 
     void playMoves(std::vector<vec2<int>> moves);

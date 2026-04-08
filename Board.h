@@ -2,10 +2,13 @@
 
 #include <vector>
 #include <AnimationWindow.h>
-#include "vec2.h"
 #include <ostream>
 
+#include "vec2.h"
+
 namespace Hex {
+
+class Game;
 
 struct InvalidMoveError : public std::runtime_error {
     vec2<int> move;
@@ -58,6 +61,7 @@ public:
     void playerTwoPlace(const vec2<int> &tile);
 
     Board(const vec2<int> &size); // initialize board size
+    friend Game;
 };
 
 } // Hex namespace
