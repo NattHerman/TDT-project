@@ -34,6 +34,7 @@ public:
 
     Turn getTurn() const;
     std::shared_ptr<Board>  getBoard() const { return board; };
+    std::vector<vec2<int>>  getMoves() const { return moves; };
     GameState getState() const { return state; };
 
     void takeTurn(const vec2<int> &move, bool save = true);
@@ -41,6 +42,7 @@ public:
     void forfeit();
 
     void playMoves(std::vector<vec2<int>> moves);
+    void displayMove(int index);
 
     void newGame(vec2<int> size = {11, 11});
     void saveGame(std::filesystem::path path);

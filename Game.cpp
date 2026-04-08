@@ -93,6 +93,23 @@ void Hex::Game::playMoves(std::vector<vec2<int>> moves) {
     }
 }
 
+void Hex::Game::displayMove(int index) {
+    board->resetBoard();
+
+    int turnNumber = 1;
+    for (int i = 0; i <= index && i < moves.size(); ++i) {
+        vec2<int> move = moves.at(i);
+        bool turnIsOdd = turnNumber % 2 == 1;
+        if (turnIsOdd) {
+            board->playerOnePlace(move);
+        } else {
+            board->playerTwoPlace(move);
+        }
+
+        turnNumber++;
+    }
+}
+
 void Hex::Game::forfeit() {
     switch (getTurn()) {
     case Turn::Player1:
