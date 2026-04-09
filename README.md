@@ -11,14 +11,14 @@ In order to check if a player has won, we must search for a connecting path of s
 ## UI system
 The UI elements are stored in a **hierarchical node tree structure**. Each node has a **single parent** and can have **multiple children**, when a node is updated or drawn it also has the responsibility to draw and update all of its children. The position of a node is stored relative to its parent, to get the "global" position of a node the relative positions of the node's parents are recursively used. "Global" here means a point in the same reference frame as the root node's position, a root node has no parents.
 
-This way of managing UI elements was inspired by the concept of Nodes used in the [Godot Engine](https://docs.godotengine.org/en/stable/about/introduction.html#doc-about-intro).
+This way of managing UI elements was inspired by the concept of Nodes and Control Nodes used in the [Godot Engine](https://docs.godotengine.org/en/stable/about/introduction.html#doc-about-intro).
 
 The UI nodes also store an axis-aligned rectangle representing its **bounding box**. This rectangle covers the entire visible or relevant surface of a node, making it easy to find the **center of a node**, or check if a **point is near the node**.
 
 ## Saving the game
 The game is saved by storing the current state of the game in a text file.
 
-The first line contains the **size** of the board, the current **turn** and the **status** (whether someone has won) of the game.
+The first line contains the **size** of the board, the current **turn** and the **status** of the game.
 
 The following lines are a list of moves which are quickly played when loading.
 
@@ -42,6 +42,6 @@ If you want to play Hex against players online, then [playhex.org](https://playh
 - Stack Overflow
 
 # Refleksjonsnotat
-I am glad that I didnt delay starting on this project, starting early let me pivot away from an idea that would maybe have been too ambitious. The first thing I implemented was the Board and Game class, they were written completely independent of any of the graphics logic. Then I got a working prototype using hexagonal buttons. The provided graphics library didnt include hexagonal buttons, unbelievable. I got distracted for a day trying to implement sounds when placing a stone, but I couldnt get it to work. Trying to align UI elements was getting frustrating, so I implemented the hierarcical UI Node system with bounding boxes. Making the Hexagonal buttons inherit from UINode made aligning the board to the center of the screen easy. One feature I waited a long time before implementing was detecting when a player had won. I was afraid implementing A* was going to be tricky or maybe janky, but the result was flawless. After I finaly implemented saving and loading, the software actually started feeling nice to use. Exeption handling was more of an afterthought to fit the requirements.
+I am glad that I didn't delay starting on this project, starting early let me pivot away from an idea that would maybe have been too ambitious. The first thing I implemented was the Board and Game class, they were written completely independent of any of the graphics logic. Then I got a working prototype using hexagonal buttons. The provided graphics library didnt include hexagonal buttons, *unbelievable*, so i had to make those myself. I got distracted for a day trying to implement sounds that play when placing a stone, but I couldnt get it to work. Trying to align UI elements was getting frustrating, so I implemented the hierarcical UI Node system with bounding boxes. Making the Hexagonal buttons inherit from UINode made aligning the board to the center of the screen easy. One feature I waited a long time before implementing was detecting when a player had won. I was afraid implementing A* was going to be tricky and janky, but the result works well. After I finaly implemented saving and loading, the software actually started feeling nice to use. Exeption handling was more of an afterthought to fit the requirements, but i am glad i found some good places to use them.
 
-From the beginning I was afraid that this project wouldnt be flashy enough, but I focused on making the sofware feel intuitive to use and create a good user interface. And I am happy with how the sofware feels to use in the end.
+From the beginning I was afraid that this project wouldnt be flashy enough, but I focused on making the sofware feel intuitive to use and create a good user interface. And I am happy with how the sofware feels to use in the end. When writing software there is always going to be more going on under the hood than meets the eye. Fitting this entire document into a 30 second video would not be easy.
