@@ -22,19 +22,8 @@ The first line contains the **size** of the board, the current **turn** and the 
 
 The following lines are a list of moves which are quickly played when loading.
 
-# Important classes
-
-## Board
-
-## Game
-
-## UINode
-
-## AStar and Node
-
-## vec2 and rect
-
 ## main.cpp
+UI configuration and alignment happens in the main function in main.cpp, this could probably be cleaned up or moved somewhere else.
 
 # Final things
 
