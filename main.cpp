@@ -51,6 +51,23 @@ void backward(std::shared_ptr<int> index, std::shared_ptr<Hex::Game> game) {
     game->displayMove(*index);
 }
 
+void drawPoints(const std::vector<Hex::vec2<int>> &points, TDT4102::Color color, std::shared_ptr<TDT4102::AnimationWindow> windowPtr) {
+    for (Hex::vec2<int> point : points) {
+        windowPtr->draw_circle(point, 7, color);
+    }
+}
+
+std::vector<Hex::vec2<int>> tilesToPoints(const std::vector<Hex::vec2<int>> &tiles, std::shared_ptr<Hex::UI::HexGrid> grid) {
+    std::vector<Hex::vec2<int>> points;
+    points.reserve(tiles.size());
+    for (Hex::vec2<int> tile : tiles) {
+        if (tile.x < 0 || tile.x > 10 || tile.y < 0 || tile.y > 10) continue;
+        points.emplace_back(grid->calculateTilePosition(tile, 25) + grid->getGlobalPosition());
+    }
+
+    return std::move(points);
+}
+
 int main() {
     // Where the game state file is stored
     std::filesystem::path savePath{"savedata/state.hex"};
@@ -131,7 +148,8 @@ int main() {
         if (!gameIsOngoing) {
             gameOverLabel->position.x = screenSize.x / 2;
             gameOverLabel->text = "Player " + std::string(player1Won ? "1" : "2") + " won!";
-            gameOverLabel->setColor(TDT4102::Color(player1Won ? 0xa86052 : 0x5676b1)); // stupid magic numbers
+            TDT4102::Color winnerColor{player1Won ? 0xa86052 : 0x5676b1};
+            gameOverLabel->setColor(winnerColor); // stupid magic numbers
         }
 
         // Align buttons
@@ -147,6 +165,11 @@ int main() {
         grid->position = screenSize / 2 - grid->getBoundingBox().getCenter();
         // drawBoundingBoxes(rootNode, windowPtr);
         rootNode->draw();
+        // Display winning path
+        if (!gameIsOngoing) {
+            TDT4102::Color pathColor{player1Won ? 0xdc9c8e : 0xa8bdde}; // magic wand: --- ~*  ~* 
+            drawPoints(tilesToPoints(game->getWinningTilePath(), grid), pathColor, windowPtr);
+        }
         windowPtr->next_frame();
     }
 

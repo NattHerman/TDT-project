@@ -216,6 +216,7 @@ void Hex::Game::loadGame(std::filesystem::path path) {
         return;
     }
 
+    searchForWin();
     std::cout << "Game loaded." << std::endl;
 }
 
@@ -243,6 +244,13 @@ Hex::GameState Hex::Game::searchForWin() {
     std::vector<std::shared_ptr<Path::Node>> path = pathfinder.findPath(audioManager.getWindowPtr());
 
     if (path.size() > 0) {
+        winningTilePath.clear();
+        winningTilePath.reserve(path.size());
+        for (std::shared_ptr<Path::Node> node : path) {
+            std::shared_ptr<Path::BoardNode> boardNode = std::static_pointer_cast<Path::BoardNode>(node);
+
+            winningTilePath.push_back(boardNode->getTile());
+        }
         return getTurn() == Turn::Player1 ? GameState::Player1Won : GameState::Player2Won;
     }
 

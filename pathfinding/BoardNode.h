@@ -42,6 +42,7 @@ protected:
 
 public:
     std::vector<std::shared_ptr<Node>> getNeighbours() override;
+    vec2<int> getTile() const { return tile; }
 
     BoardNode(std::shared_ptr<BoardNodeGenerator> generator, vec2<int> tile)
     : boardPtr{generator->boardPtr}, generator{generator}, tile{tile} {}

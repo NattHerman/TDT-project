@@ -24,6 +24,7 @@ class Game {
     GameState state = GameState::Ongoing;
     std::shared_ptr<Board> board;
     std::vector<vec2<int>> moves;
+    std::vector<vec2<int>> winningTilePath;
 
     AudioManager audioManager;
 
@@ -35,6 +36,7 @@ public:
     Turn getTurn() const;
     std::shared_ptr<Board>  getBoard() const { return board; };
     std::vector<vec2<int>>  getMoves() const { return moves; };
+    std::vector<vec2<int>>  getWinningTilePath() const { return winningTilePath; };
     GameState getState() const { return state; };
 
     void takeTurn(const vec2<int> &move, bool save = true);
