@@ -1,4 +1,5 @@
 #include "testing.h"
+#include "helper.h"
 
 void test_vec2_operators() {
     Hex::vec2<int> a{1, 2};
@@ -101,18 +102,6 @@ void test_hexbutton() {
     }
 }
 
-std::shared_ptr<Hex::HexagonalButton> createButton(
-    Hex::vec2<int> tile,
-    const std::shared_ptr<TDT4102::AnimationWindow> &windowPtr,
-    std::shared_ptr<Hex::Game> gamePtr
-) {
-    std::shared_ptr<Hex::HexagonalButton> button = std::make_shared<Hex::HexagonalButton>(tile, windowPtr, gamePtr);
-    std::function<void(Hex::vec2<int>, bool)> func = std::bind(&Hex::Game::takeTurn, gamePtr, button->getTile(), true);
-    button->setCallback(func);
-
-    return button;
-}
-
 void test_hexGrid() {
     std::shared_ptr<TDT4102::AnimationWindow> windowPtr = std::make_shared<TDT4102::AnimationWindow>();
     windowPtr->setBackgroundColor(TDT4102::Color{0x3d404f});
@@ -157,7 +146,6 @@ void test_hexGrid() {
 
         rootNode->update();
         grid->position = screenSize / 2 - grid->getBoundingBox().getCenter();
-        // drawBoundingBoxes(rootNode, windowPtr);
         rootNode->draw();
         windowPtr->next_frame();
     }
