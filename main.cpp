@@ -150,6 +150,8 @@ int main() {
             gameOverLabel->text = "Player " + std::string(player1Won ? "1" : "2") + " won!";
             TDT4102::Color winnerColor{player1Won ? 0xa86052 : 0x5676b1};
             gameOverLabel->setColor(winnerColor); // stupid magic numbers
+        } else {
+            *moveIndex = 0;
         }
 
         // Align buttons
