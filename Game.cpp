@@ -129,6 +129,7 @@ void Hex::Game::newGame(vec2<int> size) {
     turnCounter = 1;
     state = GameState::Ongoing;
     moves.clear();
+    winningTilePath.clear();
 
     board = std::make_shared<Board>(size);
 }
