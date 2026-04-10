@@ -166,7 +166,7 @@ int main() {
         // drawBoundingBoxes(rootNode, windowPtr);
         rootNode->draw();
         // Display winning path
-        if (!gameIsOngoing) {
+        if (!gameIsOngoing && game->getCurrentDisplayedMoveIndex() == game->getMoves().size() - 1) {
             TDT4102::Color pathColor{player1Won ? 0xdc9c8e : 0xa8bdde}; // magic wand: --- ~*  ~* 
             drawPoints(tilesToPoints(game->getWinningTilePath(), grid), pathColor, windowPtr);
         }

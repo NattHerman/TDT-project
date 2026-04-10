@@ -69,6 +69,7 @@ void Hex::Game::takeTurn(const vec2<int> &move, bool save) {
     // }
     turnCounter++;
     moves.emplace_back(move);
+    currentDisplayedMoveIndex = moves.size() - 1;
 
     if (save) {
         saveGame(savePath);
@@ -94,6 +95,7 @@ void Hex::Game::playMoves(std::vector<vec2<int>> moves) {
 }
 
 void Hex::Game::displayMove(int index) {
+    currentDisplayedMoveIndex = index;
     board->resetBoard();
 
     int turnNumber = 1;
@@ -253,6 +255,5 @@ Hex::GameState Hex::Game::searchForWin() {
         }
         return getTurn() == Turn::Player1 ? GameState::Player1Won : GameState::Player2Won;
     }
-
     return GameState::Ongoing;
 }

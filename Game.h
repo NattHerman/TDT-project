@@ -25,6 +25,7 @@ class Game {
     std::shared_ptr<Board> board;
     std::vector<vec2<int>> moves;
     std::vector<vec2<int>> winningTilePath;
+    int currentDisplayedMoveIndex = 0;
 
     AudioManager audioManager;
 
@@ -38,6 +39,7 @@ public:
     std::vector<vec2<int>>  getMoves() const { return moves; };
     std::vector<vec2<int>>  getWinningTilePath() const { return winningTilePath; };
     GameState getState() const { return state; };
+    int getCurrentDisplayedMoveIndex() const { return currentDisplayedMoveIndex; }
 
     void takeTurn(const vec2<int> &move, bool save = true);
     void undo();
