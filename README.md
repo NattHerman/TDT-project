@@ -1,6 +1,8 @@
 # Documentation
 [GitHub repo](https://github.com/NattHerman/TDT-project)
 
+![Gif demonstrating the game](./media/project-presentation-30sec.gif)
+
 ## The Game: Hex
 The goal in Hex ([wikipedia page](https://en.wikipedia.org/wiki/Hex_(board_game))) is to connect your edges with stones. Each player takes a turn placing stones of their color, the stones cannot be moved after placement.
 
@@ -41,6 +43,6 @@ If you want to play Hex against players online, then [playhex.org](https://playh
 - Stack Overflow
 
 # Refleksjonsnotat
-I am glad that I didn't delay starting on this project, starting early let me pivot away from an idea that would maybe have been too ambitious. The first thing I implemented was the Board and Game class, they were written completely independent of any of the graphics logic. Then I got a working prototype using hexagonal buttons. The provided graphics library didnt include hexagonal buttons, *unbelievable*, so i had to make those myself. I got distracted for a day trying to implement sounds that play when placing a stone, but I couldnt get it to work. Trying to align UI elements was getting frustrating, so I implemented the hierarcical UI Node system with bounding boxes. Making the Hexagonal buttons inherit from UINode made aligning the board to the center of the screen easy. One feature I waited a long time before implementing was detecting when a player had won. I was afraid implementing A* was going to be tricky and janky, but the result works well. After I finally implemented saving and loading, the software actually started feeling nice to use. Exeption handling was more of an afterthought to fit the requirements, but i am glad i found some good places to use them.
+I am glad that I didn't delay starting on this project, starting early let me pivot away from an idea that would maybe have been too ambitious. The first thing I implemented was the Board and Game class, they were written completely independent of any of the graphics logic. Then I got a working prototype using hexagonal buttons. The provided graphics library didnt include hexagonal buttons, *can you believe it*, so i had to make those myself. I got distracted for a day trying to implement sounds that play when placing a stone, but I couldnt get it to work. Trying to align UI elements was getting frustrating, so I implemented the hierarcical UI Node system with bounding boxes. Making the Hexagonal buttons inherit from UINode made aligning the board to the center of the screen easy. One feature I waited a long time before implementing was detecting when a player had won. I was afraid implementing A* was going to be tricky and janky, but the result works well. After I finally implemented saving and loading, the software actually started feeling nice to use. Exeption handling was more of an afterthought to fit the requirements, but i am glad i found some good places to use them.
 
 From the beginning I was afraid that this project wouldnt be flashy enough, but I focused on making the sofware feel intuitive to use and create a good user interface. And I am happy with how the sofware feels to use in the end.
